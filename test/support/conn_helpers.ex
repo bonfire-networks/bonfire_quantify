@@ -27,7 +27,7 @@ defmodule Bonfire.Quantify.Test.ConnHelpers do
   def conn(conn, {:account, account_id}) when is_binary(account_id),
     do: put_session(conn, :account_id, account_id)
 
-  def conn(conn, {:user, %User{id: id}}),
+  def conn(conn, {:user, %{id: id}}),
     do: put_session(conn, :user_id, id)
 
   def conn(conn, {:user, user_id}) when is_binary(user_id),

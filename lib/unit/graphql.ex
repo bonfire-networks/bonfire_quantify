@@ -3,9 +3,9 @@ defmodule Bonfire.Quantify.Units.GraphQL do
   use Absinthe.Schema.Notation
   require Logger
 
-  alias CommonsPub.GraphQL
+  alias Bonfire.GraphQL
 
-  alias CommonsPub.GraphQL.{
+  alias Bonfire.GraphQL.{
     # CommonResolver,
     ResolveField,
     # ResolveFields,
@@ -15,8 +15,6 @@ defmodule Bonfire.Quantify.Units.GraphQL do
     FetchPage
     # FetchPages
   }
-
-  alias CommonsPub.Meta.Pointers
 
   alias Bonfire.Quantify.Unit
   alias Bonfire.Quantify.Units
@@ -81,9 +79,9 @@ defmodule Bonfire.Quantify.Units.GraphQL do
   def create_unit(%{unit: %{in_scope_of: context_id} = attrs}, info) do
     @repo.transact_with(fn ->
       with {:ok, user} <- GraphQL.current_user_or_not_logged_in(info),
-           {:ok, pointer} <- CommonsPub.Meta.Pointers.one(id: context_id),
+           {:ok, pointer} <- Bonfire.Common.Pointers.one(id: context_id),
            :ok <- validate_unit_context(pointer),
-           context = CommonsPub.Meta.Pointers.follow!(pointer),
+           context = Bonfire.Common.Pointers.follow!(pointer),
            attrs = Map.merge(attrs, %{is_public: true}),
            {:ok, unit} <- Units.create(user, context, attrs) do
         {:ok, %{unit: unit}}
@@ -170,7 +168,7 @@ defmodule Bonfire.Quantify.Units.GraphQL do
   # context validation
 
   defp validate_unit_context(pointer) do
-    if Pointers.table!(pointer).schema in valid_contexts() do
+    if Bonfire.Common.Pointers.table!(pointer).schema in valid_contexts() do
       :ok
     else
       GraphQL.not_permitted("in_scope_of")

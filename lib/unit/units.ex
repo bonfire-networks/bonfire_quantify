@@ -1,7 +1,7 @@
 # SPDX-License-Identifier: AGPL-3.0-only
 defmodule Bonfire.Quantify.Units do
 
-  alias CommonsPub.GraphQL.{Fields, Page, Pagination}
+  alias Bonfire.GraphQL.{Fields, Page, Pagination}
   # alias CommonsPub.Contexts
 
   alias Bonfire.Quantify.Unit
@@ -84,7 +84,7 @@ defmodule Bonfire.Quantify.Units do
   ## mutations
 
   @spec create(@user.t(), attrs :: map) :: {:ok, Unit.t()} | {:error, Changeset.t()}
-  def create(%@user{} = creator, attrs) when is_map(attrs) do
+  def create(%{} = creator, attrs) when is_map(attrs) do
     @repo.transact_with(fn ->
       with {:ok, unit} <- insert_unit(creator, attrs) do
         # act_attrs = %{verb: "created", is_local: true},
@@ -97,7 +97,7 @@ defmodule Bonfire.Quantify.Units do
 
   @spec create(@user.t(), context :: any, attrs :: map) ::
           {:ok, Unit.t()} | {:error, Changeset.t()}
-  def create(%@user{} = creator, context, attrs) when is_map(attrs) do
+  def create(%{} = creator, context, attrs) when is_map(attrs) do
     @repo.transact_with(fn ->
       with {:ok, unit} <- insert_unit(creator, context, attrs) do
         # act_attrs = %{verb: "created", is_local: true},

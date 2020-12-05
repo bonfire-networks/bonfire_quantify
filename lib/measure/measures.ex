@@ -1,7 +1,7 @@
 # SPDX-License-Identifier: AGPL-3.0-only
 defmodule Bonfire.Quantify.Measures do
 
-  alias CommonsPub.GraphQL.{Fields, Page, Pagination}
+  alias Bonfire.GraphQL.{Fields, Page, Pagination}
   # alias CommonsPub.Contexts
 
   alias Bonfire.Quantify.{Measure, Unit}
@@ -84,7 +84,7 @@ defmodule Bonfire.Quantify.Measures do
   ## mutations
 
   @spec create(@user.t(), Unit.t(), attrs :: map) :: {:ok, Measure.t()} | {:error, Changeset.t()}
-  def create(%@user{} = creator, %Unit{} = unit, attrs) when is_map(attrs) do
+  def create(%{} = creator, %Unit{} = unit, attrs) when is_map(attrs) do
     @repo.transact_with(fn ->
       with {:ok, item} <- insert_measure(creator, unit, attrs) do
         #  act_attrs = %{verb: "created", is_local: true},

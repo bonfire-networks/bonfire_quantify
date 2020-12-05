@@ -3,8 +3,10 @@ defmodule Bonfire.Quantify.Measures.Queries do
   import Bonfire.Repo.Query, only: [match_admin: 0]
   import Ecto.Query
   alias Bonfire.Repo
-  alias CommonsPub.Users.User
+  @user Application.get_env(:bonfire_quantify, :user_module)
   alias Bonfire.Quantify.{Measure, Unit}
+
+  @user Application.get_env(:bonfire_quantify, :user_module)
 
   def query(Measure) do
     from(c in Measure, as: :measure)
@@ -52,7 +54,7 @@ defmodule Bonfire.Quantify.Measures.Queries do
 
   def filter(q, {:user, match_admin()}), do: q
 
-  def filter(q, {:user, %User{id: _id}}) do
+  def filter(q, {:user, %{id: _id}}) do
     q
     |> where([measure: c], not is_nil(c.published_at))
     |> filter(~w(disabled)a)

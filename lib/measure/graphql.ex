@@ -2,9 +2,9 @@
 defmodule Bonfire.Quantify.Measures.GraphQL do
   use Absinthe.Schema.Notation
 
-  alias CommonsPub.GraphQL
+  alias Bonfire.GraphQL
 
-  alias CommonsPub.GraphQL.{
+  alias Bonfire.GraphQL.{
     ResolveField,
     ResolveFields,
     # ResolvePage,

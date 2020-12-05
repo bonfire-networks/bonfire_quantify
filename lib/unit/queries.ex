@@ -10,7 +10,7 @@ defmodule Bonfire.Quantify.Units.Queries do
   # }
 
   # alias CommonsPub.Users
-  alias CommonsPub.Users.User
+  @user Application.get_env(:bonfire_quantify, :user_module)
   alias Bonfire.Quantify.Unit
 
   def query(Unit) do
@@ -84,14 +84,14 @@ defmodule Bonfire.Quantify.Units.Queries do
   def filter(q, {:user, match_admin()}), do: q
   def filter(q, {:user, nil}), do: filter(q, ~w(disabled private)a)
 
-  # def filter(q, {:user, %User{id: id}}) do
+  # def filter(q, {:user, %{id: id}}) do
   #   q
   #   |> join_to(follow: id)
   #   |> where([unit: c, follow: f], not is_nil(c.published_at) or not is_nil(f.id))
   #   |> filter(~w(disabled)a)
   # end
 
-  def filter(q, {:user, %User{id: _id}}) do
+  def filter(q, {:user, %{id: _id}}) do
     q
     |> where([unit: c], not is_nil(c.published_at))
     |> filter(~w(disabled)a)
