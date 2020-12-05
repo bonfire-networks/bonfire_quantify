@@ -24,8 +24,11 @@ defmodule Bonfire.Quantify.Units.GraphQL do
   alias Bonfire.Quantify.Measures
 
   @repo CommonsPub.Repo
+  @schema_file "lib/measurement.gql"
 
-  import_sdl(path: "lib/extensions/bonfire_quantities/measurement.gql")
+  @external_resource @schema_file
+
+  import_sdl(path: @schema_file)
 
   ## resolvers
 
