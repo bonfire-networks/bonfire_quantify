@@ -176,6 +176,7 @@ defmodule Bonfire.Quantify.Units.GraphQL do
   end
 
   defp valid_contexts do
-    Keyword.fetch!(CommonsPub.Config.get!(Units), :valid_contexts)
+    config = Application.get_env(:bonfire_quantify, Units)
+    Keyword.fetch!(config, :valid_contexts)
   end
 end
