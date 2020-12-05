@@ -1,4 +1,4 @@
-defmodule Bonfire.PublisherThesis.Test.ConnHelpers do
+defmodule Bonfire.Quantify.Test.ConnHelpers do
 
   import ExUnit.Assertions
   import Plug.Conn
@@ -8,7 +8,7 @@ defmodule Bonfire.PublisherThesis.Test.ConnHelpers do
   alias Bonfire.Data.Identity.Account
   alias Bonfire.Data.Identity.User
 
-  @endpoint Bonfire.PublisherThesis.Web.Endpoint
+  @endpoint Bonfire.Quantify.Web.Endpoint
 
   ### conn
 

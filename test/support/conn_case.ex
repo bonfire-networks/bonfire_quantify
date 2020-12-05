@@ -1,4 +1,4 @@
-defmodule Bonfire.PublisherThesis.ConnCase do
+defmodule Bonfire.Quantify.ConnCase do
   @moduledoc """
   This module defines the test case to be used by
   tests that require setting up a connection.
@@ -23,20 +23,20 @@ defmodule Bonfire.PublisherThesis.ConnCase do
       import Plug.Conn
       import Phoenix.ConnTest
       import Phoenix.LiveViewTest
-      import Bonfire.PublisherThesis.ConnCase
-      import Bonfire.PublisherThesis.Test.ConnHelpers
-      import Bonfire.PublisherThesis.Test.FakeHelpers
-      alias Bonfire.PublisherThesis.Fake
-      alias Bonfire.PublisherThesis.Web.Router.Helpers, as: Routes
+      import Bonfire.Quantify.ConnCase
+      import Bonfire.Quantify.Test.ConnHelpers
+      import Bonfire.Quantify.Test.FakeHelpers
+      alias Bonfire.Quantify.Fake
+      alias Bonfire.Quantify.Web.Router.Helpers, as: Routes
 
       # The default endpoint for testing
-      @endpoint Bonfire.PublisherThesis.Web.Endpoint
+      @endpoint Bonfire.Quantify.Web.Endpoint
     end
   end
 
   setup tags do
 
-    @repo Application.get_env(:bonfire_publisher_thesis, :repo_module)
+    @repo Application.get_env(:bonfire_quantify, :repo_module)
 
     :ok = Ecto.Adapters.SQL.Sandbox.checkout(@repo)
 

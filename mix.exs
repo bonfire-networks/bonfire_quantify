@@ -1,11 +1,11 @@
 Code.eval_file("mess.exs")
-defmodule Bonfire.PublisherThesis.MixProject do
+defmodule Bonfire.Quantify.MixProject do
 
   use Mix.Project
 
   def project do
     [
-      app: :bonfire_publisher_thesis,
+      app: :bonfire_quantify,
       version: "0.1.0",
       elixir: "~> 1.10",
       elixirc_paths: elixirc_paths(Mix.env()),
@@ -22,7 +22,7 @@ defmodule Bonfire.PublisherThesis.MixProject do
 
   def application do
     [
-      # mod: {Bonfire.PublisherThesis.FallbackApplication, []},
+      # mod: {Bonfire.Quantify.FallbackApplication, []},
       extra_applications: [:logger, :runtime_tools]
     ]
   end

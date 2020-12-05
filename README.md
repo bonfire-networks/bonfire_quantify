@@ -1,14 +1,9 @@
-# Bonfire:Me
+# Bonfire:Quantify
 
 An extension for [Bonfire](https://bonfire.cafe/) that handles:
 
-- Account creation
-- Email verification
-- Authentication
-- User/Profile creation
-- User/Profile switching
-- User Profile
-- Settings
+- Units
+- Measures
 
 ## Handy commands
 

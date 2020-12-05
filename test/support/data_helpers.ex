@@ -1,6 +1,6 @@
-defmodule Bonfire.PublisherThesis.DataHelpers do
+defmodule Bonfire.Quantify.DataHelpers do
 
   # import ExUnit.Assertions
-  # alias Bonfire.PublisherThesis.Fake
+  # alias Bonfire.Quantify.Fake
 
 end

@@ -1,4 +1,4 @@
-defmodule Bonfire.PublisherThesis.Repo.Migrations.InitPointers do
+defmodule Bonfire.Quantify.Repo.Migrations.InitPointers do
   use Ecto.Migration
   import Pointers.Migration
   import Pointers.ULID.Migration

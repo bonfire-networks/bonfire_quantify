@@ -1,4 +1,4 @@
-defmodule Bonfire.PublisherThesis.DataCase do
+defmodule Bonfire.Quantify.DataCase do
   @moduledoc """
   This module defines the setup for tests requiring
   access to the application's data layer.
@@ -10,7 +10,7 @@ defmodule Bonfire.PublisherThesis.DataCase do
   we enable the SQL sandbox, so changes done to the database
   are reverted at the end of every test. If you are using
   PostgreSQL, you can even run database tests asynchronously
-  by setting `use Bonfire.PublisherThesis.DataCase, async: true`, although
+  by setting `use Bonfire.Quantify.DataCase, async: true`, although
   this option is not recommended for other databases.
   """
 
@@ -22,13 +22,13 @@ defmodule Bonfire.PublisherThesis.DataCase do
       import Ecto
       import Ecto.Changeset
       import Ecto.Query
-      import Bonfire.PublisherThesis.DataCase
+      import Bonfire.Quantify.DataCase
     end
   end
 
   setup tags do
 
-    @repo Application.get_env(:bonfire_publisher_thesis, :repo_module)
+    @repo Application.get_env(:bonfire_quantify, :repo_module)
 
     :ok = Ecto.Adapters.SQL.Sandbox.checkout(@repo)
 

@@ -13,7 +13,7 @@ use Mix.Config
 # import_config "bonfire_web_phoenix.exs"
 
 # include all used Bonfire extensions
-import_config "bonfire_publisher_thesis.exs"
+import_config "bonfire_quantify.exs"
 
 
 #### Basic configuration

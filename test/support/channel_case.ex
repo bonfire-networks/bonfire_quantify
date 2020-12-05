@@ -1,4 +1,4 @@
-defmodule Bonfire.PublisherThesis.ChannelCase do
+defmodule Bonfire.Quantify.ChannelCase do
   @moduledoc """
   This module defines the test case to be used by
   channel tests.
@@ -21,16 +21,16 @@ defmodule Bonfire.PublisherThesis.ChannelCase do
     quote do
       # Import conveniences for testing with channels
       import Phoenix.ChannelTest
-      import Bonfire.PublisherThesis.ChannelCase
+      import Bonfire.Quantify.ChannelCase
 
       # The default endpoint for testing
-      @endpoint Bonfire.PublisherThesis.Web.Endpoint
+      @endpoint Bonfire.Quantify.Web.Endpoint
     end
   end
 
   setup tags do
 
-    @repo Application.get_env(:bonfire_publisher_thesis, :repo_module)
+    @repo Application.get_env(:bonfire_quantify, :repo_module)
 
     :ok = Ecto.Adapters.SQL.Sandbox.checkout(@repo)
 
