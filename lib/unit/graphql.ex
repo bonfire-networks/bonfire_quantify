@@ -23,7 +23,7 @@ defmodule Bonfire.Quantify.Units.GraphQL do
   alias Bonfire.Quantify.Units.Queries
   alias Bonfire.Quantify.Measures
 
-  @repo CommonsPub.Repo
+  @repo Application.get_env(:bonfire_quantify, :repo_module)
   @schema_file "lib/measurement.gql"
 
   @external_resource @schema_file

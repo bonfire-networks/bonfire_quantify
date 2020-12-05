@@ -18,7 +18,7 @@ defmodule Bonfire.Quantify.Measures.GraphQL do
   alias Bonfire.Quantify.Measures
   alias Bonfire.Quantify.Units
 
-  @repo CommonsPub.Repo
+  @repo Application.get_env(:bonfire_quantify, :repo_module)
 
   # resolvers
 

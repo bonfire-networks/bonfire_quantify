@@ -1,6 +1,5 @@
 defmodule Bonfire.Quantify.Simulate do
-  import CommonsPub.Utils.Simulation
-  # import CommonsPub.Utils.Trendy
+  # import CommonsPub.Utils.Simulation
 
   alias Bonfire.Quantify.Units
   alias Bonfire.Quantify.Measures

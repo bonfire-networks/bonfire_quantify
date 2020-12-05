@@ -7,8 +7,8 @@ defmodule Bonfire.Quantify.Measures do
   alias Bonfire.Quantify.{Measure, Unit}
   alias Bonfire.Quantify.Measures.Queries
 
-  @user CommonsPub.Users.User
-  @repo CommonsPub.Repo
+  @user Application.get_env(:bonfire_quantify, :user_module)
+  @repo Application.get_env(:bonfire_quantify, :repo_module)
 
   def cursor(), do: &[&1.id]
   def test_cursor(), do: &[&1["id"]]

@@ -1,15 +1,14 @@
 # SPDX-License-Identifier: AGPL-3.0-only
 defmodule Bonfire.Quantify.Units do
 
-  alias CommonsPub.Common
   alias CommonsPub.GraphQL.{Fields, Page, Pagination}
   # alias CommonsPub.Contexts
 
   alias Bonfire.Quantify.Unit
   alias Bonfire.Quantify.Units.Queries
 
-  @repo CommonsPub.Repo
-  @user CommonsPub.Users.User
+  @repo Application.get_env(:bonfire_quantify, :repo_module)
+  @user Application.get_env(:bonfire_quantify, :user_module)
 
   def cursor(), do: &[&1.id]
   def test_cursor(), do: &[&1["id"]]
@@ -167,7 +166,7 @@ defmodule Bonfire.Quantify.Units do
 
   def soft_delete(%Unit{} = unit) do
     @repo.transact_with(fn ->
-      with {:ok, unit} <- Common.Deletion.soft_delete(unit) do
+      with {:ok, unit} <- Bonfire.Common.Deletion.soft_delete(unit) do
         # :ok <- publish(unit, :deleted) do
         {:ok, unit}
       end

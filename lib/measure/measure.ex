@@ -5,7 +5,7 @@ defmodule Bonfire.Quantify.Measure do
     source: "measurement_measure",
     table_id: "MEASVRES0RQVANT1T1ES0FVN1T"
 
-  import CommonsPub.Repo.Changeset, only: [change_public: 1, change_disabled: 1]
+  import Bonfire.Repo.Changeset, only: [change_public: 1, change_disabled: 1]
 
   alias Ecto.Changeset
   alias CommonsPub.Users.User
@@ -34,7 +34,7 @@ defmodule Bonfire.Quantify.Measure do
 
   @doc "Copy the attributes of a measure required to create a new one."
   def copy(measure) do
-    CommonsPub.Common.maybe(measure, &Map.take(&1, [:has_numerical_value, :unit_id, :creator_id]))
+    Bonfire.Common.Utils.maybe(measure, &Map.take(&1, [:has_numerical_value, :unit_id, :creator_id]))
   end
 
   def create_changeset(
