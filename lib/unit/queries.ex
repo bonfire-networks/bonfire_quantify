@@ -3,6 +3,8 @@ defmodule Bonfire.Quantify.Units.Queries do
   import Bonfire.Repo.Query, only: [match_admin: 0]
   import Ecto.Query
 
+  alias Bonfire.Quantify.Unit
+
   # alias Bonfire.Quantify.Units
   # alias CommonsPub.Follows.{
   #   Follow
@@ -10,8 +12,8 @@ defmodule Bonfire.Quantify.Units.Queries do
   # }
 
   # alias CommonsPub.Users
+
   @user Application.get_env(:bonfire_quantify, :user_module)
-  alias Bonfire.Quantify.Unit
 
   def query(Unit) do
     from(c in Unit, as: :unit)
