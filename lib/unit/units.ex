@@ -83,7 +83,7 @@ defmodule Bonfire.Quantify.Units do
 
   ## mutations
 
-  @spec create(@user.t(), attrs :: map) :: {:ok, Unit.t()} | {:error, Changeset.t()}
+  @spec create(any, attrs :: map) :: {:ok, Unit.t()} | {:error, Changeset.t()}
   def create(%{} = creator, attrs) when is_map(attrs) do
     @repo.transact_with(fn ->
       with {:ok, unit} <- insert_unit(creator, attrs) do
@@ -95,7 +95,7 @@ defmodule Bonfire.Quantify.Units do
     end)
   end
 
-  @spec create(@user.t(), context :: any, attrs :: map) ::
+  @spec create(any, context :: any, attrs :: map) ::
           {:ok, Unit.t()} | {:error, Changeset.t()}
   def create(%{} = creator, context, attrs) when is_map(attrs) do
     @repo.transact_with(fn ->

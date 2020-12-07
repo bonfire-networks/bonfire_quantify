@@ -83,7 +83,7 @@ defmodule Bonfire.Quantify.Measures do
 
   ## mutations
 
-  @spec create(@user.t(), Unit.t(), attrs :: map) :: {:ok, Measure.t()} | {:error, Changeset.t()}
+  @spec create(any, Unit.t(), attrs :: map) :: {:ok, Measure.t()} | {:error, Changeset.t()}
   def create(%{} = creator, %Unit{} = unit, attrs) when is_map(attrs) do
     @repo.transact_with(fn ->
       with {:ok, item} <- insert_measure(creator, unit, attrs) do
