@@ -25,7 +25,7 @@ defmodule Bonfire.Quantify.Unit do
     field(:disabled_at, :utc_datetime_usec)
     field(:deleted_at, :utc_datetime_usec)
 
-    belongs_to(:creator, User)
+    belongs_to(:creator, @user)
     belongs_to(:context, Pointer)
 
     timestamps(inserted_at: false)

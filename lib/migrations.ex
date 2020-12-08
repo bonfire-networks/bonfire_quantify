@@ -4,6 +4,8 @@ defmodule Bonfire.Quantify.Migrations do
 
   alias Measurement
 
+  @user Application.get_env(:bonfire_quantify, :user_module)
+
   def unit_table(), do: Bonfire.Quantify.Unit.__schema__(:source)
   def measure_table(), do: Bonfire.Quantify.Measure.__schema__(:source)
 
@@ -13,7 +15,7 @@ defmodule Bonfire.Quantify.Migrations do
       add(:symbol, :string)
 
       add(:context_id, weak_pointer(), null: true)
-      add(:creator_id, references("mn_user", on_delete: :nilify_all))
+      add(:creator_id, references(@user, on_delete: :nilify_all))
 
       add(:published_at, :timestamptz)
       add(:deleted_at, :timestamptz)
@@ -28,7 +30,7 @@ defmodule Bonfire.Quantify.Migrations do
       add(:has_numerical_value, :float)
 
       add(:unit_id, strong_pointer(Bonfire.Quantify.Unit), null: false)
-      add(:creator_id, references("mn_user", on_delete: :nilify_all))
+      add(:creator_id, references(@user, on_delete: :nilify_all))
 
       add(:published_at, :timestamptz)
       add(:deleted_at, :timestamptz)

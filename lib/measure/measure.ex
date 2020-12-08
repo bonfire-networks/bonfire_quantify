@@ -24,7 +24,7 @@ defmodule Bonfire.Quantify.Measure do
     field(:deleted_at, :utc_datetime_usec)
 
     belongs_to(:unit, Unit)
-    belongs_to(:creator, User)
+    belongs_to(:creator, @user)
 
     timestamps(inserted_at: false)
   end
