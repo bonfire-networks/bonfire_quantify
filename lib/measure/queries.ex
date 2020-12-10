@@ -2,9 +2,10 @@
 defmodule Bonfire.Quantify.Measures.Queries do
   import Bonfire.Repo.Query, only: [match_admin: 0]
   import Ecto.Query
-  alias Bonfire.Repo
-  alias CommonsPub.Users.User
   alias Bonfire.Quantify.{Measure, Unit}
+
+  @user Application.get_env(:bonfire_quantify, :user_module)
+  @repo Application.get_env(:bonfire_quantify, :repo_module)
 
   def query(Measure) do
     from(c in Measure, as: :measure)
@@ -52,7 +53,7 @@ defmodule Bonfire.Quantify.Measures.Queries do
 
   def filter(q, {:user, match_admin()}), do: q
 
-  def filter(q, {:user, %User{id: _id}}) do
+  def filter(q, {:user, %{id: _id}}) do
     q
     |> where([measure: c], not is_nil(c.published_at))
     |> filter(~w(disabled)a)
@@ -128,7 +129,7 @@ defmodule Bonfire.Quantify.Measures.Queries do
       update: [inc: [has_numerical_value: ^amount]],
       where: r.id == ^id
     )
-    |> Repo.update_all([])
+    |> @repo.update_all([])
   end
 
 end

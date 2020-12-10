@@ -3,6 +3,8 @@ defmodule Bonfire.Quantify.Units.Queries do
   import Bonfire.Repo.Query, only: [match_admin: 0]
   import Ecto.Query
 
+  alias Bonfire.Quantify.Unit
+
   # alias Bonfire.Quantify.Units
   # alias CommonsPub.Follows.{
   #   Follow
@@ -10,8 +12,8 @@ defmodule Bonfire.Quantify.Units.Queries do
   # }
 
   # alias CommonsPub.Users
-  alias CommonsPub.Users.User
-  alias Bonfire.Quantify.Unit
+
+  @user Application.get_env(:bonfire_quantify, :user_module)
 
   def query(Unit) do
     from(c in Unit, as: :unit)
@@ -84,14 +86,14 @@ defmodule Bonfire.Quantify.Units.Queries do
   def filter(q, {:user, match_admin()}), do: q
   def filter(q, {:user, nil}), do: filter(q, ~w(disabled private)a)
 
-  # def filter(q, {:user, %User{id: id}}) do
+  # def filter(q, {:user, %{id: id}}) do
   #   q
   #   |> join_to(follow: id)
   #   |> where([unit: c, follow: f], not is_nil(c.published_at) or not is_nil(f.id))
   #   |> filter(~w(disabled)a)
   # end
 
-  def filter(q, {:user, %User{id: _id}}) do
+  def filter(q, {:user, %{id: _id}}) do
     q
     |> where([unit: c], not is_nil(c.published_at))
     |> filter(~w(disabled)a)

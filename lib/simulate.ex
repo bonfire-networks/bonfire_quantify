@@ -1,5 +1,5 @@
 defmodule Bonfire.Quantify.Simulate do
-  # import CommonsPub.Utils.Simulation
+  import Bonfire.Common.Simulation
 
   alias Bonfire.Quantify.Units
   alias Bonfire.Quantify.Measures
@@ -19,7 +19,7 @@ defmodule Bonfire.Quantify.Simulate do
     |> Map.put_new_lazy(:is_public, &truth/0)
     |> Map.put_new_lazy(:is_disabled, &falsehood/0)
     |> Map.put_new_lazy(:is_featured, &falsehood/0)
-    |> Map.merge(character(base))
+    # |> Map.merge(character(base))
   end
 
   def unit_input(base \\ %{}) do
