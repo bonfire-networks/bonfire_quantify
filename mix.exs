@@ -13,9 +13,8 @@ defmodule Bonfire.Quantify.MixProject do
       start_permanent: Mix.env() == :prod,
       aliases: aliases(),
       deps: Mess.deps [
-        {:phoenix_live_reload, "~> 1.2", only: :dev},
-        {:dbg, "~> 1.0", only: [:dev, :test]},
         {:floki, ">= 0.0.0", only: [:dev, :test]},
+        {:bonfire_api_graphql, git: "https://github.com/bonfire-ecosystem/bonfire_api_graphql", branch: "main", optional: true}
       ]
     ]
   end
