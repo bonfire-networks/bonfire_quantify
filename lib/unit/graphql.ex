@@ -1,19 +1,21 @@
 # SPDX-License-Identifier: AGPL-3.0-only
+if Code.ensure_loaded?(Bonfire.GraphQL) do
 defmodule Bonfire.Quantify.Units.GraphQL do
   use Absinthe.Schema.Notation
   require Logger
 
-  alias CommonsPub.GraphQL
+  alias Bonfire.GraphQL
 
-  alias CommonsPub.GraphQL.{
+  alias Bonfire.GraphQL.{
     # CommonResolver,
     ResolveField,
     # ResolveFields,
     # ResolvePage,
     # ResolvePages,
     ResolveRootPage,
-    FetchPage
-    # FetchPages
+    FetchPage,
+    # FetchPages,
+    Fields, Page, Pagination
   }
 
   alias CommonsPub.Meta.Pointers
@@ -29,6 +31,59 @@ defmodule Bonfire.Quantify.Units.GraphQL do
   @external_resource @schema_file
 
   import_sdl(path: @schema_file)
+
+  def fields(group_fn, filters \\ [])
+      when is_function(group_fn, 1) do
+    {:ok, fields} = Units.many(filters)
+    {:ok, Fields.new(fields, group_fn)}
+  end
+
+  @doc """
+  Retrieves an Page of units according to various filters
+
+  Used by:
+  * GraphQL resolver single-parent resolution
+  """
+  def page(cursor_fn, page_opts, base_filters \\ [], data_filters \\ [], count_filters \\ [])
+
+  def page(cursor_fn, %{} = page_opts, base_filters, data_filters, count_filters) do
+    base_q = Queries.query(Unit, base_filters)
+    data_q = Queries.filter(base_q, data_filters)
+    count_q = Queries.filter(base_q, count_filters)
+
+    with {:ok, [data, counts]} <- @repo.transact_many(all: data_q, count: count_q) do
+      {:ok, Page.new(data, counts, cursor_fn, page_opts)}
+    end
+  end
+
+  @doc """
+  Retrieves an Pages of units according to various filters
+
+  Used by:
+  * GraphQL resolver bulk resolution
+  """
+  def pages(
+        cursor_fn,
+        group_fn,
+        page_opts,
+        base_filters \\ [],
+        data_filters \\ [],
+        count_filters \\ []
+      )
+
+  def pages(cursor_fn, group_fn, page_opts, base_filters, data_filters, count_filters) do
+    Pagination.pages(
+      Queries,
+      Unit,
+      cursor_fn,
+      group_fn,
+      page_opts,
+      base_filters,
+      data_filters,
+      count_filters
+    )
+  end
+
 
   ## resolvers
 
@@ -180,4 +235,5 @@ defmodule Bonfire.Quantify.Units.GraphQL do
   defp valid_contexts do
     Keyword.fetch!(CommonsPub.Config.get!(Units), :valid_contexts)
   end
+end
 end

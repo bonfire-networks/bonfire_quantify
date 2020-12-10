@@ -1,10 +1,11 @@
 # SPDX-License-Identifier: AGPL-3.0-only
+if Code.ensure_loaded?(Bonfire.GraphQL) do
 defmodule Bonfire.Quantify.Measures.GraphQL do
   use Absinthe.Schema.Notation
 
-  alias CommonsPub.GraphQL
+  alias Bonfire.GraphQL
 
-  alias CommonsPub.GraphQL.{
+  alias Bonfire.GraphQL.{
     ResolveField,
     ResolveFields,
     # ResolvePage,
@@ -12,13 +13,69 @@ defmodule Bonfire.Quantify.Measures.GraphQL do
     ResolveRootPage,
     FetchPage,
     # FetchPages,
-    FetchFields
+    FetchFields,
+    Fields, Page, Pagination
   }
 
+  alias Bonfire.Quantify.Measure
   alias Bonfire.Quantify.Measures
+  alias Bonfire.Quantify.Measures.Queries
+
   alias Bonfire.Quantify.Units
 
   @repo Application.get_env(:bonfire_quantify, :repo_module)
+
+  def fields(group_fn, filters \\ [])
+      when is_function(group_fn, 1) do
+    {:ok, fields} = Measures.many(filters)
+    {:ok, Fields.new(fields, group_fn)}
+  end
+
+  @doc """
+  Retrieves an Page of units according to various filters
+
+  Used by:
+  * GraphQL resolver single-parent resolution
+  """
+  def page(cursor_fn, page_opts, base_filters \\ [], data_filters \\ [], count_filters \\ [])
+
+  def page(cursor_fn, %{} = page_opts, base_filters, data_filters, count_filters) do
+    base_q = Queries.query(Measure, base_filters)
+    data_q = Queries.filter(base_q, data_filters)
+    count_q = Queries.filter(base_q, count_filters)
+
+    with {:ok, [data, counts]} <- @repo.transact_many(all: data_q, count: count_q) do
+      {:ok, Page.new(data, counts, cursor_fn, page_opts)}
+    end
+  end
+
+  @doc """
+  Retrieves an Pages of units according to various filters
+
+  Used by:
+  * GraphQL resolver bulk resolution
+  """
+  def pages(
+        cursor_fn,
+        group_fn,
+        page_opts,
+        base_filters \\ [],
+        data_filters \\ [],
+        count_filters \\ []
+      )
+
+  def pages(cursor_fn, group_fn, page_opts, base_filters, data_filters, count_filters) do
+    Pagination.pages(
+      Queries,
+      Measure,
+      cursor_fn,
+      group_fn,
+      page_opts,
+      base_filters,
+      data_filters,
+      count_filters
+    )
+  end
 
   # resolvers
 
@@ -163,4 +220,5 @@ defmodule Bonfire.Quantify.Measures.GraphQL do
       end
     end)
   end
+end
 end

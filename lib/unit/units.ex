@@ -1,7 +1,6 @@
 # SPDX-License-Identifier: AGPL-3.0-only
 defmodule Bonfire.Quantify.Units do
 
-  alias CommonsPub.GraphQL.{Fields, Page, Pagination}
   # alias CommonsPub.Contexts
 
   alias Bonfire.Quantify.Unit
@@ -16,7 +15,7 @@ defmodule Bonfire.Quantify.Units do
   @doc """
   Retrieves a single collection by arbitrary filters.
   Used by:
-  * GraphQL Item queries
+  * Item queries
   * ActivityPub integration
   * Various parts of the codebase that need to query for collections (inc. tests)
   """
@@ -29,62 +28,11 @@ defmodule Bonfire.Quantify.Units do
   """
   def many(filters \\ []), do: {:ok, @repo.all(Queries.query(Unit, filters))}
 
-  def fields(group_fn, filters \\ [])
-      when is_function(group_fn, 1) do
-    {:ok, fields} = many(filters)
-    {:ok, Fields.new(fields, group_fn)}
-  end
-
-  @doc """
-  Retrieves an Page of units according to various filters
-
-  Used by:
-  * GraphQL resolver single-parent resolution
-  """
-  def page(cursor_fn, page_opts, base_filters \\ [], data_filters \\ [], count_filters \\ [])
-
-  def page(cursor_fn, %{} = page_opts, base_filters, data_filters, count_filters) do
-    base_q = Queries.query(Unit, base_filters)
-    data_q = Queries.filter(base_q, data_filters)
-    count_q = Queries.filter(base_q, count_filters)
-
-    with {:ok, [data, counts]} <- @repo.transact_many(all: data_q, count: count_q) do
-      {:ok, Page.new(data, counts, cursor_fn, page_opts)}
-    end
-  end
-
-  @doc """
-  Retrieves an Pages of units according to various filters
-
-  Used by:
-  * GraphQL resolver bulk resolution
-  """
-  def pages(
-        cursor_fn,
-        group_fn,
-        page_opts,
-        base_filters \\ [],
-        data_filters \\ [],
-        count_filters \\ []
-      )
-
-  def pages(cursor_fn, group_fn, page_opts, base_filters, data_filters, count_filters) do
-    Pagination.pages(
-      Queries,
-      Unit,
-      cursor_fn,
-      group_fn,
-      page_opts,
-      base_filters,
-      data_filters,
-      count_filters
-    )
-  end
 
   ## mutations
 
-  @spec create(@user.t(), attrs :: map) :: {:ok, Unit.t()} | {:error, Changeset.t()}
-  def create(%@user{} = creator, attrs) when is_map(attrs) do
+  @spec create(any(), attrs :: map) :: {:ok, Unit.t()} | {:error, Changeset.t()}
+  def create(%{} = creator, attrs) when is_map(attrs) do
     @repo.transact_with(fn ->
       with {:ok, unit} <- insert_unit(creator, attrs) do
         # act_attrs = %{verb: "created", is_local: true},
@@ -95,9 +43,9 @@ defmodule Bonfire.Quantify.Units do
     end)
   end
 
-  @spec create(@user.t(), context :: any, attrs :: map) ::
+  @spec create(any(), context :: any, attrs :: map) ::
           {:ok, Unit.t()} | {:error, Changeset.t()}
-  def create(%@user{} = creator, context, attrs) when is_map(attrs) do
+  def create(%{} = creator, context, attrs) when is_map(attrs) do
     @repo.transact_with(fn ->
       with {:ok, unit} <- insert_unit(creator, context, attrs) do
         # act_attrs = %{verb: "created", is_local: true},

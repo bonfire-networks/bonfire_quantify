@@ -9,7 +9,7 @@ defmodule Bonfire.Quantify.Unit do
   alias Ecto.Changeset
   # alias CommonsPub.Characters.Character
   alias Pointers.Pointer
-  alias CommonsPub.Users.User
+  @user Application.get_env(:bonfire_quantify, :user_module)
 
   # alias Bonfire.Quantify.Unit
 
@@ -25,7 +25,7 @@ defmodule Bonfire.Quantify.Unit do
     field(:disabled_at, :utc_datetime_usec)
     field(:deleted_at, :utc_datetime_usec)
 
-    belongs_to(:creator, User)
+    belongs_to(:creator, @user)
     belongs_to(:context, Pointer)
 
     timestamps(inserted_at: false)
@@ -35,7 +35,7 @@ defmodule Bonfire.Quantify.Unit do
   @cast @required ++ ~w(is_disabled is_public)a
 
   def create_changeset(
-        %User{} = creator,
+        %{} = creator,
         attrs
       ) do
     %Bonfire.Quantify.Unit{}
@@ -49,7 +49,7 @@ defmodule Bonfire.Quantify.Unit do
   end
 
   def create_changeset(
-        %User{} = creator,
+        %{} = creator,
         %{id: _} = context,
         attrs
       ) do

@@ -8,7 +8,7 @@ defmodule Bonfire.Quantify.Measure do
   import Bonfire.Repo.Changeset, only: [change_public: 1, change_disabled: 1]
 
   alias Ecto.Changeset
-  alias CommonsPub.Users.User
+  @user Application.get_env(:bonfire_quantify, :user_module)
   # alias CommonsPub.Characters.Character
   alias Bonfire.Quantify.Unit
 
@@ -24,7 +24,7 @@ defmodule Bonfire.Quantify.Measure do
     field(:deleted_at, :utc_datetime_usec)
 
     belongs_to(:unit, Unit)
-    belongs_to(:creator, User)
+    belongs_to(:creator, @user)
 
     timestamps(inserted_at: false)
   end
@@ -38,7 +38,7 @@ defmodule Bonfire.Quantify.Measure do
   end
 
   def create_changeset(
-        %User{} = creator,
+        %{} = creator,
         %Unit{} = unit,
         attrs
       ) do

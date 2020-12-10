@@ -1,3 +1,4 @@
+if Code.ensure_loaded?(Bonfire.GraphQL) do
 defmodule Bonfire.Quantify.Hydration do
 
   alias CommonsPub.Web.GraphQL.CommonResolver
@@ -56,4 +57,5 @@ defmodule Bonfire.Quantify.Hydration do
       }
     }
   end
+end
 end

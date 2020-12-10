@@ -1,7 +1,6 @@
 # SPDX-License-Identifier: AGPL-3.0-only
 defmodule Bonfire.Quantify.Measures do
 
-  alias CommonsPub.GraphQL.{Fields, Page, Pagination}
   # alias CommonsPub.Contexts
 
   alias Bonfire.Quantify.{Measure, Unit}
@@ -29,62 +28,12 @@ defmodule Bonfire.Quantify.Measures do
   """
   def many(filters \\ []), do: {:ok, @repo.all(Queries.query(Measure, filters))}
 
-  def fields(group_fn, filters \\ [])
-      when is_function(group_fn, 1) do
-    {:ok, fields} = many(filters)
-    {:ok, Fields.new(fields, group_fn)}
-  end
 
-  @doc """
-  Retrieves an Page of units according to various filters
-
-  Used by:
-  * GraphQL resolver single-parent resolution
-  """
-  def page(cursor_fn, page_opts, base_filters \\ [], data_filters \\ [], count_filters \\ [])
-
-  def page(cursor_fn, %{} = page_opts, base_filters, data_filters, count_filters) do
-    base_q = Queries.query(Measure, base_filters)
-    data_q = Queries.filter(base_q, data_filters)
-    count_q = Queries.filter(base_q, count_filters)
-
-    with {:ok, [data, counts]} <- @repo.transact_many(all: data_q, count: count_q) do
-      {:ok, Page.new(data, counts, cursor_fn, page_opts)}
-    end
-  end
-
-  @doc """
-  Retrieves an Pages of units according to various filters
-
-  Used by:
-  * GraphQL resolver bulk resolution
-  """
-  def pages(
-        cursor_fn,
-        group_fn,
-        page_opts,
-        base_filters \\ [],
-        data_filters \\ [],
-        count_filters \\ []
-      )
-
-  def pages(cursor_fn, group_fn, page_opts, base_filters, data_filters, count_filters) do
-    Pagination.pages(
-      Queries,
-      Measure,
-      cursor_fn,
-      group_fn,
-      page_opts,
-      base_filters,
-      data_filters,
-      count_filters
-    )
-  end
 
   ## mutations
 
-  @spec create(@user.t(), Unit.t(), attrs :: map) :: {:ok, Measure.t()} | {:error, Changeset.t()}
-  def create(%@user{} = creator, %Unit{} = unit, attrs) when is_map(attrs) do
+  @spec create(any(), Unit.t(), attrs :: map) :: {:ok, Measure.t()} | {:error, Changeset.t()}
+  def create(%{} = creator, %Unit{} = unit, attrs) when is_map(attrs) do
     @repo.transact_with(fn ->
       with {:ok, item} <- insert_measure(creator, unit, attrs) do
         #  act_attrs = %{verb: "created", is_local: true},
