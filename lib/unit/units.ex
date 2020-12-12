@@ -7,7 +7,7 @@ defmodule Bonfire.Quantify.Units do
   alias Bonfire.Quantify.Units.Queries
 
   @repo Application.get_env(:bonfire_quantify, :repo_module)
-  @user Application.get_env(:bonfire_quantify, :user_module)
+  @user Application.get_env(:bonfire_quantify, :user_schema)
 
   def cursor(), do: &[&1.id]
   def test_cursor(), do: &[&1["id"]]
