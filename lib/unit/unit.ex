@@ -9,7 +9,7 @@ defmodule Bonfire.Quantify.Unit do
   alias Ecto.Changeset
   # alias CommonsPub.Characters.Character
   alias Pointers.Pointer
-  @user Application.get_env(:bonfire_quantify, :user_module)
+  @user Application.get_env(:bonfire_quantify, :user_schema)
 
   # alias Bonfire.Quantify.Unit
 

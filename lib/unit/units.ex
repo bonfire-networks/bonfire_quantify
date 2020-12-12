@@ -7,7 +7,7 @@ defmodule Bonfire.Quantify.Units do
   alias Bonfire.Quantify.Units.Queries
 
   @repo Application.get_env(:bonfire_quantify, :repo_module)
-  @user Application.get_env(:bonfire_quantify, :user_module)
+  @user Application.get_env(:bonfire_quantify, :user_schema)
 
   def cursor(), do: &[&1.id]
   def test_cursor(), do: &[&1["id"]]
@@ -33,6 +33,7 @@ defmodule Bonfire.Quantify.Units do
 
   @spec create(any(), attrs :: map) :: {:ok, Unit.t()} | {:error, Changeset.t()}
   def create(%{} = creator, attrs) when is_map(attrs) do
+    # IO.inspect(@repo)
     @repo.transact_with(fn ->
       with {:ok, unit} <- insert_unit(creator, attrs) do
         # act_attrs = %{verb: "created", is_local: true},

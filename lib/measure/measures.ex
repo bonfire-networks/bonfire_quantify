@@ -6,7 +6,7 @@ defmodule Bonfire.Quantify.Measures do
   alias Bonfire.Quantify.{Measure, Unit}
   alias Bonfire.Quantify.Measures.Queries
 
-  @user Application.get_env(:bonfire_quantify, :user_module)
+  @user Application.get_env(:bonfire_quantify, :user_schema)
   @repo Application.get_env(:bonfire_quantify, :repo_module)
 
   def cursor(), do: &[&1.id]

@@ -4,7 +4,7 @@ defmodule Bonfire.Quantify.Measures.Queries do
   import Ecto.Query
   alias Bonfire.Quantify.{Measure, Unit}
 
-  @user Application.get_env(:bonfire_quantify, :user_module)
+  @user Application.get_env(:bonfire_quantify, :user_schema)
   @repo Application.get_env(:bonfire_quantify, :repo_module)
 
   def query(Measure) do
