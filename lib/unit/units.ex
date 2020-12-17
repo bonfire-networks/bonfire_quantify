@@ -6,8 +6,8 @@ defmodule Bonfire.Quantify.Units do
   alias Bonfire.Quantify.Unit
   alias Bonfire.Quantify.Units.Queries
 
-  @repo Application.get_env(:bonfire_quantify, :repo_module)
-  @user Application.get_env(:bonfire_quantify, :user_schema)
+  import Bonfire.Common.Config, only: [repo: 0]
+  @user Bonfire.Common.Config.get_ext(:bonfire_quantify, :user_schema)
 
   def cursor(), do: &[&1.id]
   def test_cursor(), do: &[&1["id"]]
@@ -19,22 +19,22 @@ defmodule Bonfire.Quantify.Units do
   * ActivityPub integration
   * Various parts of the codebase that need to query for collections (inc. tests)
   """
-  def one(filters), do: @repo.single(Queries.query(Unit, filters))
+  def one(filters), do: repo().single(Queries.query(Unit, filters))
 
   @doc """
   Retrieves a list of collections by arbitrary filters.
   Used by:
   * Various parts of the codebase that need to query for collections (inc. tests)
   """
-  def many(filters \\ []), do: {:ok, @repo.all(Queries.query(Unit, filters))}
+  def many(filters \\ []), do: {:ok, repo().all(Queries.query(Unit, filters))}
 
 
   ## mutations
 
   @spec create(any(), attrs :: map) :: {:ok, Unit.t()} | {:error, Changeset.t()}
   def create(%{} = creator, attrs) when is_map(attrs) do
-    # IO.inspect(@repo)
-    @repo.transact_with(fn ->
+    #
+    repo().transact_with(fn ->
       with {:ok, unit} <- insert_unit(creator, attrs) do
         # act_attrs = %{verb: "created", is_local: true},
         # {:ok, activity} <- Activities.create(creator, unit, act_attrs), #FIXME
@@ -47,7 +47,7 @@ defmodule Bonfire.Quantify.Units do
   @spec create(any(), context :: any, attrs :: map) ::
           {:ok, Unit.t()} | {:error, Changeset.t()}
   def create(%{} = creator, context, attrs) when is_map(attrs) do
-    @repo.transact_with(fn ->
+    repo().transact_with(fn ->
       with {:ok, unit} <- insert_unit(creator, context, attrs) do
         # act_attrs = %{verb: "created", is_local: true},
         # {:ok, activity} <- Activities.create(creator, unit, act_attrs), #FIXME
@@ -58,11 +58,11 @@ defmodule Bonfire.Quantify.Units do
   end
 
   defp insert_unit(creator, attrs) do
-    @repo.insert(Unit.create_changeset(creator, attrs))
+    repo().insert(Unit.create_changeset(creator, attrs))
   end
 
   defp insert_unit(creator, context, attrs) do
-    @repo.insert(Unit.create_changeset(creator, context, attrs))
+    repo().insert(Unit.create_changeset(creator, context, attrs))
   end
 
   # defp publish(creator, unit, activity, :created) do
@@ -110,11 +110,11 @@ defmodule Bonfire.Quantify.Units do
   # TODO: take the user who is performing the update
   @spec update(%Unit{}, attrs :: map) :: {:ok, Bonfire.Quantify.Unit.t()} | {:error, Changeset.t()}
   def update(%Unit{} = unit, attrs) do
-    @repo.update(Unit.update_changeset(unit, attrs))
+    repo().update(Unit.update_changeset(unit, attrs))
   end
 
   def soft_delete(%Unit{} = unit) do
-    @repo.transact_with(fn ->
+    repo().transact_with(fn ->
       with {:ok, unit} <- Bonfire.Repo.Delete.soft_delete(unit) do
         # :ok <- publish(unit, :deleted) do
         {:ok, unit}

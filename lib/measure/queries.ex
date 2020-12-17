@@ -4,8 +4,8 @@ defmodule Bonfire.Quantify.Measures.Queries do
   import Ecto.Query
   alias Bonfire.Quantify.{Measure, Unit}
 
-  @user Application.get_env(:bonfire_quantify, :user_schema)
-  @repo Application.get_env(:bonfire_quantify, :repo_module)
+  @user Bonfire.Common.Config.get_ext(:bonfire_quantify, :user_schema)
+  import Bonfire.Common.Config, only: [repo: 0]
 
   def query(Measure) do
     from(c in Measure, as: :measure)
@@ -129,7 +129,7 @@ defmodule Bonfire.Quantify.Measures.Queries do
       update: [inc: [has_numerical_value: ^amount]],
       where: r.id == ^id
     )
-    |> @repo.update_all([])
+    |> repo().update_all([])
   end
 
 end

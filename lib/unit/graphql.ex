@@ -23,7 +23,7 @@ defmodule Bonfire.Quantify.Units.GraphQL do
   alias Bonfire.Quantify.Units.Queries
   alias Bonfire.Quantify.Measures
 
-  @repo Application.get_env(:bonfire_quantify, :repo_module)
+  import Bonfire.Common.Config, only: [repo: 0]
   @schema_file "lib/measurement.gql"
 
   @external_resource @schema_file
@@ -49,7 +49,7 @@ defmodule Bonfire.Quantify.Units.GraphQL do
     data_q = Queries.filter(base_q, data_filters)
     count_q = Queries.filter(base_q, count_filters)
 
-    with {:ok, [data, counts]} <- @repo.transact_many(all: data_q, count: count_q) do
+    with {:ok, [data, counts]} <- repo().transact_many(all: data_q, count: count_q) do
       {:ok, Page.new(data, counts, cursor_fn, page_opts)}
     end
   end
@@ -132,7 +132,7 @@ defmodule Bonfire.Quantify.Units.GraphQL do
 
 
   def create_unit(%{unit: %{in_scope_of: context_id} = attrs}, info) do
-    @repo.transact_with(fn ->
+    repo().transact_with(fn ->
       with {:ok, user} <- GraphQL.current_user_or_not_logged_in(info),
            {:ok, pointer} <- Bonfire.Common.Pointers.one(id: context_id),
            :ok <- validate_unit_context(pointer),
@@ -146,7 +146,7 @@ defmodule Bonfire.Quantify.Units.GraphQL do
 
   # without context/scope
   def create_unit(%{unit: attrs} = _params, info) do
-    @repo.transact_with(fn ->
+    repo().transact_with(fn ->
       with {:ok, user} <- GraphQL.current_user_or_not_logged_in(info),
            attrs = Map.merge(attrs, %{is_public: true}),
            {:ok, unit} <- Units.create(user, attrs) do
@@ -156,7 +156,7 @@ defmodule Bonfire.Quantify.Units.GraphQL do
   end
 
   def update_unit(%{unit: %{id: id} = changes}, info) do
-    @repo.transact_with(fn ->
+    repo().transact_with(fn ->
       with {:ok, user} <- GraphQL.current_user_or_not_logged_in(info),
            {:ok, unit} <- unit(%{id: id}, info) do
         cond do
@@ -176,7 +176,7 @@ defmodule Bonfire.Quantify.Units.GraphQL do
   end
 
   def delete_unit(%{id: id}, info) do
-    @repo.transact_with(fn ->
+    repo().transact_with(fn ->
       with {:ok, user} <- GraphQL.current_user_or_not_logged_in(info),
            {:ok, unit} <- unit(%{id: id}, info) do
         if allow_delete?(user, unit) do
@@ -231,7 +231,7 @@ defmodule Bonfire.Quantify.Units.GraphQL do
   end
 
   defp valid_contexts do
-    config = Application.get_env(:bonfire_quantify, Units)
+    config = Bonfire.Common.Config.get_ext(:bonfire_quantify, Units)
     Keyword.fetch!(config, :valid_contexts)
   end
 end

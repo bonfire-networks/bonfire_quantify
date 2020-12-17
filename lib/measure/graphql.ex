@@ -23,7 +23,7 @@ defmodule Bonfire.Quantify.Measures.GraphQL do
 
   alias Bonfire.Quantify.Units
 
-  @repo Application.get_env(:bonfire_quantify, :repo_module)
+  import Bonfire.Common.Config, only: [repo: 0]
 
   def fields(group_fn, filters \\ [])
       when is_function(group_fn, 1) do
@@ -44,7 +44,7 @@ defmodule Bonfire.Quantify.Measures.GraphQL do
     data_q = Queries.filter(base_q, data_filters)
     count_q = Queries.filter(base_q, count_filters)
 
-    with {:ok, [data, counts]} <- @repo.transact_many(all: data_q, count: count_q) do
+    with {:ok, [data, counts]} <- repo().transact_many(all: data_q, count: count_q) do
       {:ok, Page.new(data, counts, cursor_fn, page_opts)}
     end
   end
@@ -144,7 +144,7 @@ defmodule Bonfire.Quantify.Measures.GraphQL do
   # mutations
 
   def create_measures(attrs, info, fields) do
-    @repo.transact_with(fn ->
+    repo().transact_with(fn ->
       attrs
       |> Map.take(fields)
       |> map_ok_error(&create_measure(&1, info))
@@ -152,7 +152,7 @@ defmodule Bonfire.Quantify.Measures.GraphQL do
   end
 
   def update_measures(attrs, info, fields) do
-    @repo.transact_with(fn ->
+    repo().transact_with(fn ->
       attrs
       |> Map.take(fields)
       |> map_ok_error(fn
@@ -192,7 +192,7 @@ defmodule Bonfire.Quantify.Measures.GraphQL do
   end
 
   def create_measure(%{has_unit: unit_id} = attrs, info) do
-    @repo.transact_with(fn ->
+    repo().transact_with(fn ->
       with {:ok, user} <- GraphQL.current_user_or_not_logged_in(info),
            {:ok, unit} <- Units.one(user: user, id: unit_id),
            {:ok, measure} <- Measures.create(user, unit, attrs) do
@@ -202,7 +202,7 @@ defmodule Bonfire.Quantify.Measures.GraphQL do
   end
 
   def update_measure(%{id: id} = changes, info) do
-    @repo.transact_with(fn ->
+    repo().transact_with(fn ->
       with {:ok, user} <- GraphQL.current_user_or_not_logged_in(info),
            {:ok, measure} <- measure(%{id: id}, info) do
         cond do

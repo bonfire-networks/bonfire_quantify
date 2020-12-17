@@ -6,8 +6,8 @@ defmodule Bonfire.Quantify.Measures do
   alias Bonfire.Quantify.{Measure, Unit}
   alias Bonfire.Quantify.Measures.Queries
 
-  @user Application.get_env(:bonfire_quantify, :user_schema)
-  @repo Application.get_env(:bonfire_quantify, :repo_module)
+  @user Bonfire.Common.Config.get_ext(:bonfire_quantify, :user_schema)
+  import Bonfire.Common.Config, only: [repo: 0]
 
   def cursor(), do: &[&1.id]
   def test_cursor(), do: &[&1["id"]]
@@ -19,14 +19,14 @@ defmodule Bonfire.Quantify.Measures do
   * ActivityPub integration
   * Various parts of the codebase that need to query for collections (inc. tests)
   """
-  def one(filters), do: @repo.single(Queries.query(Measure, filters))
+  def one(filters), do: repo().single(Queries.query(Measure, filters))
 
   @doc """
   Retrieves a list of collections by arbitrary filters.
   Used by:
   * Various parts of the codebase that need to query for collections (inc. tests)
   """
-  def many(filters \\ []), do: {:ok, @repo.all(Queries.query(Measure, filters))}
+  def many(filters \\ []), do: {:ok, repo().all(Queries.query(Measure, filters))}
 
 
 
@@ -34,7 +34,7 @@ defmodule Bonfire.Quantify.Measures do
 
   @spec create(any(), Unit.t(), attrs :: map) :: {:ok, Measure.t()} | {:error, Changeset.t()}
   def create(%{} = creator, %Unit{} = unit, attrs) when is_map(attrs) do
-    @repo.transact_with(fn ->
+    repo().transact_with(fn ->
       with {:ok, item} <- insert_measure(creator, unit, attrs) do
         #  act_attrs = %{verb: "created", is_local: true},
         #  {:ok, activity} <- Activities.create(creator, item, act_attrs), #FIXME
@@ -48,7 +48,7 @@ defmodule Bonfire.Quantify.Measures do
   defp insert_measure(creator, unit, attrs) do
     # TODO: use upsert?
     # TODO: should we re-use the same measurement instead of storing duplicates? (but would have to be careful to insert a new measurement rather than update)
-    @repo.insert(Bonfire.Quantify.Measure.create_changeset(creator, unit, attrs)
+    repo().insert(Bonfire.Quantify.Measure.create_changeset(creator, unit, attrs)
       # on_conflict: [set: [has_numerical_value: attrs.has_numerical_value]]
     )
   end
@@ -80,8 +80,8 @@ defmodule Bonfire.Quantify.Measures do
   # TODO: take the user who is performing the update
   @spec update(Measure.t(), attrs :: map) :: {:ok, Measure.t()} | {:error, Changeset.t()}
   def update(%Measure{} = measure, attrs) do
-    @repo.transact_with(fn ->
-      with {:ok, measure} <- @repo.update(Measure.update_changeset(measure, attrs)) do
+    repo().transact_with(fn ->
+      with {:ok, measure} <- repo().update(Measure.update_changeset(measure, attrs)) do
         #  :ok <- publish(measure, :updated) do
         {:ok, measure}
       end
@@ -89,7 +89,7 @@ defmodule Bonfire.Quantify.Measures do
   end
 
   # def soft_delete(%Measure{} = measure) do
-  #   @repo.transact_with(fn ->
+  #   repo().transact_with(fn ->
   #     with {:ok, measure} <- Bonfire.Repo.Delete.soft_delete(measure),
   #          :ok <- publish(measure, :deleted) do
   #       {:ok, measure}
