@@ -132,12 +132,11 @@ defmodule Bonfire.Quantify.Units.GraphQL do
 
 
   def create_unit(%{unit: %{in_scope_of: context_id} = attrs}, info) do
+    attrs = Map.merge(attrs, %{is_public: true})
     repo().transact_with(fn ->
       with {:ok, user} <- GraphQL.current_user_or_not_logged_in(info),
-           {:ok, pointer} <- Bonfire.Common.Pointers.one(id: context_id),
-           :ok <- validate_unit_context(pointer),
-           context = Bonfire.Common.Pointers.follow!(pointer),
-           attrs = Map.merge(attrs, %{is_public: true}),
+           {:ok, context} <- Bonfire.Common.Pointers.get(context_id),
+           :ok <- validate_unit_context(context),
            {:ok, unit} <- Units.create(user, context, attrs) do
         {:ok, %{unit: unit}}
       end
@@ -160,7 +159,7 @@ defmodule Bonfire.Quantify.Units.GraphQL do
       with {:ok, user} <- GraphQL.current_user_or_not_logged_in(info),
            {:ok, unit} <- unit(%{id: id}, info) do
         cond do
-          user.local_user.is_instance_admin ->
+          Bonfire.Quantify.Integration.is_admin(user) ->
             {:ok, u} = Units.update(unit, changes)
             {:ok, %{unit: u}}
 
@@ -195,7 +194,7 @@ defmodule Bonfire.Quantify.Units.GraphQL do
   end
 
   defp allow_user_delete?(user, unit) do
-    user.local_user.is_instance_admin or unit.creator_id == user.id
+    Bonfire.Quantify.Integration.is_admin(user) or unit.creator_id == user.id
   end
 
   # TODO: provide a more helpful error message
@@ -223,7 +222,8 @@ defmodule Bonfire.Quantify.Units.GraphQL do
   # context validation
 
   defp validate_unit_context(pointer) do
-    if Bonfire.Common.Pointers.table!(pointer).schema in valid_contexts() do
+    IO.inspect(context: pointer)
+    if pointer.__struct__ in valid_contexts() do
       :ok
     else
       GraphQL.not_permitted("in_scope_of")
@@ -231,8 +231,7 @@ defmodule Bonfire.Quantify.Units.GraphQL do
   end
 
   defp valid_contexts do
-    config = Bonfire.Common.Config.get_ext(:bonfire_quantify, Units)
-    Keyword.fetch!(config, :valid_contexts)
+    Bonfire.Common.Config.get_ext!(:bonfire_quantify, [Units, :valid_contexts])
   end
 end
 end

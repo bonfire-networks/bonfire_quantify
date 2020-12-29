@@ -25,7 +25,9 @@ defmodule Bonfire.Quantify.ConnCase do
       import Phoenix.LiveViewTest
       import Bonfire.Quantify.ConnCase
       import Bonfire.Quantify.Test.ConnHelpers
-      import Bonfire.Quantify.Test.FakeHelpers
+      # import Bonfire.Quantify.Test.FakeHelpers
+      unquote(Bonfire.Common.Utils.import_if_available(Bonfire.Me.Fake))
+
       alias Bonfire.Quantify.Fake
       alias Bonfire.Quantify.Web.Router.Helpers, as: Routes
 
