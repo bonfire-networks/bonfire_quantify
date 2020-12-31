@@ -6,7 +6,7 @@ defmodule Bonfire.Quantify.Measures do
   alias Bonfire.Quantify.{Measure, Unit}
   alias Bonfire.Quantify.Measures.Queries
 
-  @user Bonfire.Common.Config.get_ext(:bonfire_quantify, :user_schema)
+  @user Bonfire.Common.Config.get!(:user_schema)
   import Bonfire.Common.Config, only: [repo: 0]
 
   def cursor(), do: &[&1.id]

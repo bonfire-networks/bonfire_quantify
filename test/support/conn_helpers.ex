@@ -5,7 +5,7 @@ defmodule Bonfire.Quantify.Test.ConnHelpers do
   alias Plug.{Conn, Session}
   import ExUnit.Assertions
 
-  @endpoint Bonfire.Common.Config.get_ext!(:bonfire_quantify, :endpoint_module)
+  @endpoint Bonfire.Common.Config.get!(:endpoint_module)
 
   def conn(), do: ConnTest.build_conn()
 

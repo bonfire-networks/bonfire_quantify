@@ -4,7 +4,7 @@ defmodule Bonfire.Quantify.Migrations do
 
   alias Measurement
 
-  @user Bonfire.Common.Config.get_ext(:bonfire_quantify, :user_schema)
+  @user Bonfire.Common.Config.get!(:user_schema)
 
   def unit_table(), do: Bonfire.Quantify.Unit.__schema__(:source)
   def measure_table(), do: Bonfire.Quantify.Measure.__schema__(:source)

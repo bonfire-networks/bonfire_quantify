@@ -13,7 +13,7 @@ defmodule Bonfire.Quantify.Units.Queries do
 
   # alias CommonsPub.Users
 
-  @user Bonfire.Common.Config.get_ext(:bonfire_quantify, :user_schema)
+  @user Bonfire.Common.Config.get!(:user_schema)
 
   def query(Unit) do
     from(c in Unit, as: :unit)
