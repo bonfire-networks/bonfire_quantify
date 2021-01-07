@@ -32,7 +32,7 @@ defmodule Bonfire.Quantify.ConnCase do
       alias Bonfire.Quantify.Web.Router.Helpers, as: Routes
 
       # The default endpoint for testing
-      @endpoint Bonfire.Quantify.Web.Endpoint
+      @endpoint Bonfire.Common.Config.get!(:endpoint_module)
     end
   end
 

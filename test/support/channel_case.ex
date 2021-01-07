@@ -24,7 +24,7 @@ defmodule Bonfire.Quantify.ChannelCase do
       import Bonfire.Quantify.ChannelCase
 
       # The default endpoint for testing
-      @endpoint Bonfire.Quantify.Web.Endpoint
+      @endpoint Bonfire.Common.Config.get!(:endpoint_module)
     end
   end
 
