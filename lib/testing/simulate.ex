@@ -61,8 +61,15 @@ defmodule Bonfire.Quantify.Simulate do
     end
   end
 
-  def fake_measure!(user, unit, overrides \\ %{}) do
+  def fake_measure!(user, %{id: _} = unit \\ nil, %{} = overrides \\ %{}) do
     {:ok, measure} = Measures.create(user, unit, measure(overrides))
     measure
   end
+
+  def fake_measure!(user, _, _) do
+    fake_measure!(user, fake_unit!(user))
+  end
+
+
+
 end
