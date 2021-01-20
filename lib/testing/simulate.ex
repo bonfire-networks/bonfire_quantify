@@ -8,7 +8,7 @@ defmodule Bonfire.Quantify.Simulate do
   alias Bonfire.Quantify.Measures
 
   @doc "A unit"
-  def unit_name(), do: Faker.Util.pick(["kilo", "liter"])
+  def unit_name(), do: Faker.Util.pick(["kilo", "liter", "meter", "pound", "ton"])
   def unit_symbol(), do: Faker.Util.pick(["kg", "m"])
 
   ### Start fake data functions
