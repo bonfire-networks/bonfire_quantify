@@ -13,8 +13,7 @@ defmodule Bonfire.Quantify.UnitsTest do
   # import Grumble
   # import Zest
 
-  # alias CommonsPub.Utils.Simulation
-
+  import Bonfire.Me.Fake
   import Bonfire.Quantify.Simulate
   alias Bonfire.Quantify.Unit
   alias Bonfire.Quantify.Units
