@@ -142,6 +142,18 @@ defmodule Bonfire.Quantify.Units.Queries do
     where(q, [unit: c], c.id in ^ids)
   end
 
+  def filter(q, {:label, label}) when is_binary(label) do
+    where(q, [unit: c], c.label == ^label)
+  end
+
+  def filter(q, {:symbol, symbol}) when is_binary(symbol) do
+    where(q, [unit: c], c.symbol == ^symbol)
+  end
+
+  def filter(q, {:label_or_symbol, search}) when is_binary(search) do
+    where(q, [unit: c], c.label == ^search or c.symbol == ^search)
+  end
+
   def filter(q, {:context_id, id}) when is_binary(id) do
     where(q, [unit: c], c.context_id == ^id)
   end

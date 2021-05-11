@@ -30,11 +30,21 @@ defmodule Bonfire.Quantify.Measure do
   end
 
   @required ~w(has_numerical_value)a
-  @cast @required ++ ~w()a
+  @cast @required ++ ~w(unit_id)a
 
   @doc "Copy the attributes of a measure required to create a new one."
   def copy(measure) do
     Bonfire.Common.Utils.maybe(measure, &Map.take(&1, [:has_numerical_value, :unit_id, :creator_id]))
+  end
+
+  def validate_changeset(
+        %__MODULE__{} = measure \\ %__MODULE__{},
+        attrs
+      ) do
+    measure
+    |> Changeset.cast(attrs, @cast)
+    |> Changeset.validate_required(@required)
+    |> common_changeset()
   end
 
   def create_changeset(
@@ -42,15 +52,12 @@ defmodule Bonfire.Quantify.Measure do
         %Unit{} = unit,
         attrs
       ) do
-    %__MODULE__{}
-    |> Changeset.cast(attrs, @cast)
-    |> Changeset.validate_required(@required)
+    validate_changeset(attrs)
     |> Changeset.change(
       creator_id: creator.id,
       unit_id: unit.id,
       is_public: true
     )
-    |> common_changeset()
   end
 
   def update_changeset(%__MODULE__{} = measure, attrs) do
