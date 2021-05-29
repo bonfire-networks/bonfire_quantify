@@ -3,7 +3,7 @@ defmodule Bonfire.Quantify.Measure do
   use Pointers.Pointable,
     otp_app: :commons_pub,
     source: "measurement_measure",
-    table_id: "MEASVRES0RQVANT1T1ES0FVN1T"
+    table_id: "4EASVRES0RQVANT1T1ES0FVN1T"
 
   import Bonfire.Repo.Changeset, only: [change_public: 1, change_disabled: 1]
 

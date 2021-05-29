@@ -2,7 +2,7 @@ defmodule Bonfire.Quantify.Unit do
   use Pointers.Pointable,
     otp_app: :commons_pub,
     source: "measurement_unit",
-    table_id: "VN1TF0RMEASVRES0RQVANT1T1E"
+    table_id: "3N1TF0RMEASVRES0RQVANT1T1E"
 
   import Bonfire.Repo.Changeset, only: [change_public: 1, change_disabled: 1]
 
