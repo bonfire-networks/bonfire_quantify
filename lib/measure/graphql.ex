@@ -104,7 +104,7 @@ defmodule Bonfire.Quantify.Measures.GraphQL do
     Measures.one([
       :default,
       user: GraphQL.current_user(info),
-      id: id
+      id: id #|> IO.inspect
     ])
   end
 

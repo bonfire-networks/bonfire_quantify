@@ -222,7 +222,7 @@ defmodule Bonfire.Quantify.Units.GraphQL do
   # context validation
 
   defp validate_unit_context(pointer) do
-    IO.inspect(context: pointer)
+    # IO.inspect(context: pointer)
     if pointer.__struct__ in valid_contexts() do
       :ok
     else

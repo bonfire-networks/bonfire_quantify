@@ -23,6 +23,8 @@ defmodule Bonfire.Quantify.Units.Queries do
     from(c in Unit, as: :unit)
   end
 
+  def query(filters), do: filter(Unit, filters)
+
   def query(q, filters), do: filter(query(q), filters)
 
   def queries(query, _page_opts, base_filters, data_filters, count_filters) do

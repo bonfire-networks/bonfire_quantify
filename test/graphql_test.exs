@@ -70,7 +70,7 @@ defmodule Bonfire.Quantify.GraphQLTest do
       user = fake_user!()
       context = fake_user!()
 
-      IO.inspect(Pointers.Tables.data(), limit: :infinity)
+      # IO.inspect(Pointers.Tables.data(), limit: :infinity)
 
       q = create_unit_mutation(fields: [in_scope_of: [:__typename]])
       conn = user_conn(user)
@@ -118,7 +118,7 @@ defmodule Bonfire.Quantify.GraphQLTest do
       unit = fake_unit!(user)
       measure = fake_measure!(user, unit)
 
-      q = measure_query()
+      q = measure_query() #|> IO.inspect
       conn = user_conn(user)
       assert_measure(grumble_post_key(q, conn, :measure, %{id: measure.id}))
     end
