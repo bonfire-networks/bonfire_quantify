@@ -26,7 +26,7 @@ defmodule Bonfire.Quantify.Units do
   Used by:
   * Various parts of the codebase that need to query for collections (inc. tests)
   """
-  def many(filters \\ []), do: {:ok, repo().all(Queries.query(Unit, filters))}
+  def many(filters \\ []), do: {:ok, repo().many(Queries.query(Unit, filters))}
 
 
   ## mutations

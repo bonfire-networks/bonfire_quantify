@@ -26,7 +26,7 @@ defmodule Bonfire.Quantify.Measures do
   Used by:
   * Various parts of the codebase that need to query for collections (inc. tests)
   """
-  def many(filters \\ []), do: {:ok, repo().all(Queries.query(Measure, filters))}
+  def many(filters \\ []), do: {:ok, repo().many(Queries.query(Measure, filters))}
 
 
 
