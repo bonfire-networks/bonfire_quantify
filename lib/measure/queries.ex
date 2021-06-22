@@ -15,7 +15,7 @@ defmodule Bonfire.Quantify.Measures.Queries do
     from(c in Measure, as: :measure)
   end
 
-  def query(filters), do: filter(Measure, filters)
+  def query(filters), do: query(Measure, filters)
 
   def query(q, filters), do: filter(query(q), filters)
 
