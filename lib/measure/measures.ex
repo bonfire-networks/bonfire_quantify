@@ -9,6 +9,8 @@ defmodule Bonfire.Quantify.Measures do
   @user Bonfire.Common.Config.get!(:user_schema)
   import Bonfire.Common.Config, only: [repo: 0]
 
+  def federation_module, do: ["Measure"]
+
   def cursor(), do: &[&1.id]
   def test_cursor(), do: &[&1["id"]]
 

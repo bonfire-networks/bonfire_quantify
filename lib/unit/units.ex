@@ -9,6 +9,8 @@ defmodule Bonfire.Quantify.Units do
   import Bonfire.Common.Config, only: [repo: 0]
   @user Bonfire.Common.Config.get!(:user_schema)
 
+  def federation_module, do: ["Unit"]
+
   def cursor(), do: &[&1.id]
   def test_cursor(), do: &[&1["id"]]
 
