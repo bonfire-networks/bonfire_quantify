@@ -7,7 +7,7 @@ defmodule Bonfire.Quantify.Unit do
   import Bonfire.Repo.Changeset, only: [change_public: 1, change_disabled: 1]
 
   alias Ecto.Changeset
-  # alias CommonsPub.Characters.Character
+  alias Bonfire.Common.Utils
   alias Pointers.Pointer
   @user Bonfire.Common.Config.get!(:user_schema)
 
@@ -35,21 +35,21 @@ defmodule Bonfire.Quantify.Unit do
   @cast @required ++ ~w(is_disabled is_public)a
 
   def create_changeset(
-        %{} = creator,
+        creator,
         attrs
       ) do
     %Bonfire.Quantify.Unit{}
     |> Changeset.cast(attrs, @cast)
     |> Changeset.validate_required(@required)
     |> Changeset.change(
-      creator_id: creator.id,
+      creator_id: Utils.e(creator, :id, nil),
       is_public: true
     )
     |> common_changeset()
   end
 
   def create_changeset(
-        %{} = creator,
+        creator,
         %{id: _} = context,
         attrs
       ) do
@@ -57,7 +57,7 @@ defmodule Bonfire.Quantify.Unit do
     |> Changeset.cast(attrs, @cast)
     |> Changeset.validate_required(@required)
     |> Changeset.change(
-      creator_id: creator.id,
+      creator_id: Utils.e(creator, :id, nil),
       context_id: context.id,
       is_public: true
     )

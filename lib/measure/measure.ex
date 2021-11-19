@@ -9,7 +9,7 @@ defmodule Bonfire.Quantify.Measure do
 
   alias Ecto.Changeset
   @user Bonfire.Common.Config.get!(:user_schema)
-  # alias CommonsPub.Characters.Character
+  alias Bonfire.Common.Utils
   alias Bonfire.Quantify.Unit
 
   @type t :: %__MODULE__{}
@@ -48,13 +48,13 @@ defmodule Bonfire.Quantify.Measure do
   end
 
   def create_changeset(
-        %{} = creator,
+        creator,
         %Unit{} = unit,
         attrs
       ) do
     validate_changeset(attrs)
     |> Changeset.change(
-      creator_id: creator.id,
+      creator_id: Utils.e(creator, :id, nil),
       unit_id: unit.id,
       is_public: true
     )

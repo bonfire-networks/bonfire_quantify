@@ -3,13 +3,13 @@ defmodule Bonfire.Quantify.Measures do
 
   # alias CommonsPub.Contexts
 
-  alias Bonfire.Quantify.{Measure, Unit}
+  alias Bonfire.Quantify.{Measure, Unit, Units}
   alias Bonfire.Quantify.Measures.Queries
 
   @user Bonfire.Common.Config.get!(:user_schema)
   import Bonfire.Common.Config, only: [repo: 0]
 
-  def federation_module, do: ["Measure"]
+  def federation_module, do: ["Measure", "om2:Measure"]
 
   def cursor(), do: &[&1.id]
   def test_cursor(), do: &[&1["id"]]
@@ -35,7 +35,7 @@ defmodule Bonfire.Quantify.Measures do
   ## mutations
 
   @spec create(any(), Unit.t(), attrs :: map) :: {:ok, Measure.t()} | {:error, Changeset.t()}
-  def create(%{} = creator, %Unit{} = unit, attrs) when is_map(attrs) do
+  def create(creator, %Unit{} = unit, attrs) when is_map(attrs) do
     repo().transact_with(fn ->
       with {:ok, item} <- insert_measure(creator, unit, attrs) do
         #  act_attrs = %{verb: "created", is_local: true},
@@ -45,6 +45,20 @@ defmodule Bonfire.Quantify.Measures do
         {:ok, %{item | unit: unit}}
       end
     end)
+  end
+  def create(creator, maybe_unit, attrs) when is_map(attrs) do
+    with {:ok, unit} <- Units.get_or_create(maybe_unit, creator) do
+      create(creator, unit, attrs)
+    else _ ->
+      raise {:error, "Invalid unit"}
+    end
+  end
+
+  def create(creator, %{unit: unit} = attrs) when is_map(attrs) do
+    create(creator, unit, attrs)
+  end
+  def create(creator, %{has_unit: unit} = attrs) when is_map(attrs) do
+    create(creator, unit, attrs)
   end
 
   defp insert_measure(creator, unit, attrs) do
@@ -98,4 +112,14 @@ defmodule Bonfire.Quantify.Measures do
   #     end
   #   end)
   # end
+
+  def ap_publish_activity(activity_name, thing) do
+    ValueFlows.Util.Federation.ap_publish_activity(activity_name, :measure, thing, 2, [
+    ])
+  end
+
+  def ap_receive_activity(creator, activity, object) do
+    ValueFlows.Util.Federation.ap_receive_activity(creator, activity, object, &create/2)
+  end
+
 end
