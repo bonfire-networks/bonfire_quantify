@@ -135,7 +135,7 @@ defmodule Bonfire.Quantify.Units.GraphQL do
     attrs = Map.merge(attrs, %{is_public: true})
     repo().transact_with(fn ->
       with {:ok, user} <- GraphQL.current_user_or_not_logged_in(info),
-           {:ok, context} <- Bonfire.Common.Pointers.get(context_id),
+           {:ok, context} <- Bonfire.Common.Pointers.get(context_id, current_user: user),
            :ok <- validate_unit_context(context),
            {:ok, unit} <- Units.create(user, context, attrs) do
         {:ok, %{unit: unit}}
