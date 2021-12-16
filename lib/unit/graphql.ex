@@ -159,7 +159,7 @@ defmodule Bonfire.Quantify.Units.GraphQL do
       with {:ok, user} <- GraphQL.current_user_or_not_logged_in(info),
            {:ok, unit} <- unit(%{id: id}, info) do
         cond do
-          Bonfire.Quantify.Integration.is_admin(user) ->
+          Bonfire.Quantify.is_admin(user) ->
             {:ok, u} = Units.update(unit, changes)
             {:ok, %{unit: u}}
 
@@ -194,7 +194,7 @@ defmodule Bonfire.Quantify.Units.GraphQL do
   end
 
   defp allow_user_delete?(user, unit) do
-    Bonfire.Quantify.Integration.is_admin(user) or unit.creator_id == user.id
+    Bonfire.Quantify.is_admin(user) or unit.creator_id == user.id
   end
 
   # TODO: provide a more helpful error message
