@@ -4,7 +4,7 @@ defmodule Bonfire.Quantify.Unit do
     source: "measurement_unit",
     table_id: "3N1TF0RMEASVRES0RQVANT1T1E"
 
-  import Bonfire.Repo.Changeset, only: [change_public: 1, change_disabled: 1]
+  import Bonfire.Repo.Common, only: [change_public: 1, change_disabled: 1]
 
   alias Ecto.Changeset
   alias Bonfire.Common.Utils
