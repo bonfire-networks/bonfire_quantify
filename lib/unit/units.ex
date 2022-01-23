@@ -78,10 +78,8 @@ defmodule Bonfire.Quantify.Units do
           {:ok, Unit.t()} | {:error, Changeset.t()}
   def create(creator, context, attrs) when is_map(attrs) do
     repo().transact_with(fn ->
-      with {:ok, unit} <- insert_unit(creator, context, attrs) do
-        # act_attrs = %{verb: "created", is_local: true},
-        # {:ok, activity} <- Activities.create(creator, unit, act_attrs), #FIXME
-        # :ok <- publish(creator, context, unit, activity, :created) do
+      with {:ok, unit} <- insert_unit(creator, context, attrs),
+         {:ok, activity} <- ValueFlows.Util.publish(creator, :create, unit) do
         {:ok, unit}
       end
     end)
@@ -94,48 +92,6 @@ defmodule Bonfire.Quantify.Units do
   defp insert_unit(creator, context, attrs) do
     repo().insert(Unit.create_changeset(creator, context, attrs))
   end
-
-  # defp publish(creator, unit, activity, :created) do
-  #   feeds = [
-  #     CommonsPub.Feeds.outbox_id(creator),
-  #     Feeds.instance_outbox_id()
-  #   ]
-
-  #   with :ok <- FeedActivities.publish(activity, feeds) do
-  #     ap_publish(unit.id, creator.id)
-  #   end
-  # end
-
-  # defp publish(creator, context, unit, activity, :created) do
-  #   feeds = [
-  #     context.outbox_id,
-  #     CommonsPub.Feeds.outbox_id(creator),
-  #     Feeds.instance_outbox_id()
-  #   ]
-
-  #   with :ok <- FeedActivities.publish(activity, feeds) do
-  #     ap_publish(unit.id, creator.id)
-  #   end
-  # end
-
-  # defp publish(unit, :updated) do
-  #   # TODO: wrong if edited by admin
-  #   ap_publish(unit.id, unit.creator_id)
-  # end
-
-  # defp publish(unit, :deleted) do
-  #   # TODO: wrong if edited by admin
-  #   ap_publish(unit.id, unit.creator_id)
-  # end
-
-  # defp ap_publish(context_id, user_id) do
-  #   CommonsPub.FeedPublisher.publish(%{
-  #     "context_id" => context_id,
-  #     "user_id" => user_id
-  #   })
-  # end
-
-  # defp ap_publish(_, _, _), do: :ok
 
   # TODO: take the user who is performing the update
   @spec update(%Unit{}, attrs :: map) :: {:ok, Bonfire.Quantify.Unit.t()} | {:error, Changeset.t()}
