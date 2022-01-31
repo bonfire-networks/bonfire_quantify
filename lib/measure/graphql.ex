@@ -206,7 +206,7 @@ defmodule Bonfire.Quantify.Measures.GraphQL do
       with {:ok, user} <- GraphQL.current_user_or_not_logged_in(info),
            {:ok, measure} <- measure(%{id: id}, info) do
         cond do
-          Bonfire.Quantify.is_admin(user) ->
+          Bonfire.Quantify.is_admin?(user) ->
             {:ok, m} = Measures.update(measure, changes)
             {:ok, %{measure: m}}
 
