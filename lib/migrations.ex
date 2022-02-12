@@ -6,8 +6,8 @@ defmodule Bonfire.Quantify.Migrations do
 
   @user Bonfire.Common.Config.get!(:user_schema)
 
-  def unit_table(), do: Bonfire.Quantify.Unit.__schema__(:source)
-  def measure_table(), do: Bonfire.Quantify.Measure.__schema__(:source)
+  # def unit_table(), do: Bonfire.Quantify.Unit.__schema__(:source)
+  # def measure_table(), do: Bonfire.Quantify.Measure.__schema__(:source)
   # def users_table(), do: @user.__schema__(:source)
 
   def change do
@@ -16,7 +16,7 @@ defmodule Bonfire.Quantify.Migrations do
       add(:symbol, :string)
 
       add(:context_id, weak_pointer(), null: true)
-      add(:creator_id, weak_pointer(@user), null: true)
+      add(:creator_id, weak_pointer(), null: true)
 
       add(:published_at, :timestamptz)
       add(:deleted_at, :timestamptz)
@@ -31,7 +31,7 @@ defmodule Bonfire.Quantify.Migrations do
       add(:has_numerical_value, :float)
 
       add(:unit_id, strong_pointer(Bonfire.Quantify.Unit), null: false)
-      add(:creator_id, weak_pointer(@user), null: true)
+      add(:creator_id, weak_pointer(), null: true)
 
       add(:published_at, :timestamptz)
       add(:deleted_at, :timestamptz)
