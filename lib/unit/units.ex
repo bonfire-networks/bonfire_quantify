@@ -1,6 +1,6 @@
 # SPDX-License-Identifier: AGPL-3.0-only
 defmodule Bonfire.Quantify.Units do
-  require Logger
+  import Where
   # alias CommonsPub.Contexts
 
   alias Bonfire.Quantify.Unit
@@ -37,7 +37,7 @@ defmodule Bonfire.Quantify.Units do
     with {:error, _} <- one(label_or_symbol: unit),
     {:error, e} <- Bonfire.Quantify.Units.create(user, %{label: unit, symbol: unit}) do
 
-      Logger.error(e)
+      error(e)
       nil
 
     else {:ok, unit} ->
@@ -51,7 +51,7 @@ defmodule Bonfire.Quantify.Units do
     {:error, _} <- one(label_or_symbol: label),
     {:error, e} <- Bonfire.Quantify.Units.create(user, %{label: label, symbol: symbol}) do
 
-      Logger.error(e)
+      error(e)
       nil
 
     else {:ok, unit} ->
