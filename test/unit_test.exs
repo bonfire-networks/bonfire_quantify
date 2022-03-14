@@ -4,8 +4,8 @@
 #   use CommonsPub.Web.ConnCase, async: true
 #   import CommonsPub.Web.Test.Automaton
 
-#   import Bonfire.GraphQL.Test.GraphQLAssertions
-#   import Bonfire.GraphQL.Test.GraphQLFields
+#   import Bonfire.API.GraphQL.Test.GraphQLAssertions
+#   import Bonfire.API.GraphQL.Test.GraphQLFields
 #   import CommonsPub.Utils.Trendy
 #   import Bonfire.Common.Simulation
   # import CommonsPub.Utils.Simulate

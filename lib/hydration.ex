@@ -1,7 +1,7 @@
-if Code.ensure_loaded?(Bonfire.GraphQL) do
+if Code.ensure_loaded?(Bonfire.API.GraphQL) do
 defmodule Bonfire.Quantify.Hydration do
 
-  # alias Bonfire.GraphQL.CommonResolver
+  # alias Bonfire.API.GraphQL.CommonResolver
 
   def hydrate() do
     %{
