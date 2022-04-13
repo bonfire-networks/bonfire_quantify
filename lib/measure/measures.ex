@@ -1,8 +1,6 @@
 # SPDX-License-Identifier: AGPL-3.0-only
 defmodule Bonfire.Quantify.Measures do
-
-  # alias CommonsPub.Contexts
-
+  import Where
   alias Bonfire.Quantify.{Measure, Unit, Units}
   alias Bonfire.Quantify.Measures.Queries
 
@@ -31,13 +29,13 @@ defmodule Bonfire.Quantify.Measures do
   def many(filters \\ []), do: {:ok, repo().many(Queries.query(Measure, filters))}
 
 
-
   ## mutations
 
   @spec create(any(), Unit.t(), attrs :: map) :: {:ok, Measure.t()} | {:error, Changeset.t()}
   def create(creator, %Unit{} = unit, attrs) when is_map(attrs) do
     repo().transact_with(fn ->
-      with {:ok, item} <- insert_measure(creator, unit, attrs) do
+      with {:ok, item} <- insert_measure(creator, unit, attrs),
+           {:ok, activity} <- ValueFlows.Util.publish(creator, :create, item) |> dump("published quantity") do
         {:ok, %{item | unit: unit}}
       end
     end)

@@ -79,7 +79,7 @@ defmodule Bonfire.Quantify.Units do
   def create(creator, context, attrs) when is_map(attrs) do
     repo().transact_with(fn ->
       with {:ok, unit} <- insert_unit(creator, context, attrs),
-         {:ok, activity} <- ValueFlows.Util.publish(creator, :create, unit) do
+         {:ok, activity} <- ValueFlows.Util.publish(creator, :create, unit) |> dump("published unit") do
         {:ok, unit}
       end
     end)
