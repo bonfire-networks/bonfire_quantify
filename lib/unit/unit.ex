@@ -1,6 +1,6 @@
 defmodule Bonfire.Quantify.Unit do
   use Pointers.Pointable,
-    otp_app: :commons_pub,
+    otp_app: :bonfire_quantify,
     source: "measurement_unit",
     table_id: "3N1TF0RMEASVRES0RQVANT1T1E"
 

@@ -34,7 +34,15 @@ defmodule Bonfire.Quantify.Units do
   def get_or_create(unit, user \\ nil)
 
   def get_or_create(unit, user ) when is_binary(unit) do
-    with {:error, _} <- one(label_or_symbol: unit),
+
+    unit = case Process.get("uri_object:#{unit}", false) do # during federation we store nested objects like Units in the Process dictionary for re-use
+      false -> nil
+      nested_object ->
+        info(nested_object, "retrieved Unit from Process dict")
+        {:ok, nested_object}
+    end
+
+    with {:error, _} <- unit || one(label_or_symbol: unit),
     {:error, e} <- Bonfire.Quantify.Units.create(user, %{label: unit, symbol: unit}) do
 
       error(e)
@@ -47,8 +55,8 @@ defmodule Bonfire.Quantify.Units do
 
   def get_or_create(%{canonical_url: id, label: label, symbol: symbol} = unit, user ) do
      # TODO: lookup by canonicalURL for federated units
-    with {:error, _} <- one(label_or_symbol: symbol),
-    {:error, _} <- one(label_or_symbol: label),
+    with {:error, _} <- one(symbol: symbol),
+    {:error, _} <- one(label: label),
     {:error, e} <- Bonfire.Quantify.Units.create(user, %{label: label, symbol: symbol}) do
 
       error(e)
@@ -65,10 +73,8 @@ defmodule Bonfire.Quantify.Units do
   def create(creator, attrs) when is_map(attrs) do
     #
     repo().transact_with(fn ->
-      with {:ok, unit} <- insert_unit(creator, attrs) do
-        # act_attrs = %{verb: "created", is_local: true},
-        # {:ok, activity} <- Activities.create(creator, unit, act_attrs), #FIXME
-        # :ok <- publish(creator, unit, activity, :created) do
+      with {:ok, unit} <- insert_unit(creator, attrs),
+         {:ok, activity} <- ValueFlows.Util.publish(creator, :create, unit) |> dump("published unit") do
         {:ok, unit}
       end
     end)
