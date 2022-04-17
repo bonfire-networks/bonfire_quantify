@@ -35,7 +35,7 @@ defmodule Bonfire.Quantify.Measures do
   def create(creator, %Unit{} = unit, attrs) when is_map(attrs) do
     repo().transact_with(fn ->
       with {:ok, item} <- insert_measure(creator, unit, attrs),
-           {:ok, activity} <- ValueFlows.Util.publish(creator, :create, item) |> dump("published quantity") do
+           {:ok, activity} <- ValueFlows.Util.publish(creator, :create, item) |> info("published quantity") do
         {:ok, %{item | unit: unit}}
       end
     end)
