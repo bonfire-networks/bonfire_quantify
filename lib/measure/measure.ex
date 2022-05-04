@@ -5,7 +5,7 @@ defmodule Bonfire.Quantify.Measure do
     source: "measurement_measure",
     table_id: "4EASVRES0RQVANT1T1ES0FVN1T"
 
-  import Bonfire.Repo.Common, only: [change_public: 1, change_disabled: 1]
+  import Bonfire.Common.Repo.Utils, only: [change_public: 1, change_disabled: 1]
 
   alias Ecto.Changeset
   @user Bonfire.Common.Config.get!(:user_schema)

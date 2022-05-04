@@ -76,7 +76,7 @@ defmodule Bonfire.Quantify.Measures do
 
   # def soft_delete(%Measure{} = measure) do
   #   repo().transact_with(fn ->
-  #     with {:ok, measure} <- Bonfire.Repo.Delete.soft_delete(measure),
+  #     with {:ok, measure} <- Bonfire.Common.Repo.Delete.soft_delete(measure),
   #          :ok <- publish(measure, :deleted) do
   #       {:ok, measure}
   #     end

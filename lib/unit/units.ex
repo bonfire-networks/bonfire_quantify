@@ -107,7 +107,7 @@ defmodule Bonfire.Quantify.Units do
 
   def soft_delete(%Unit{} = unit) do
     repo().transact_with(fn ->
-      with {:ok, unit} <- Bonfire.Repo.Delete.soft_delete(unit) do
+      with {:ok, unit} <- Bonfire.Common.Repo.Delete.soft_delete(unit) do
         # :ok <- publish(unit, :deleted) do
         {:ok, unit}
       end
