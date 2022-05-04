@@ -22,7 +22,7 @@ defmodule Bonfire.Quantify.DataCase do
       import Ecto
       import Ecto.Changeset
       import Ecto.Query
-      import Bonfire.Quantify.DataCase, async: true
+      # import Bonfire.Quantify.DataCase
     end
   end
 
