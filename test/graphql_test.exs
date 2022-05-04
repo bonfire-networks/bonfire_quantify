@@ -10,7 +10,7 @@ defmodule Bonfire.Quantify.GraphQLTest do
   import Bonfire.Quantify.Simulate
   # alias Bonfire.Quantify.Measures
   alias Bonfire.Quantify.Units
-  import Bonfire.Me.Fake
+
 
   describe "unit" do
     test "fetches an existing unit by ID" do

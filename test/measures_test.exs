@@ -16,7 +16,7 @@ defmodule Bonfire.Quantify.MeasuresTest do
   import Bonfire.Quantify.Simulate
   # alias Bonfire.Quantify.Measure
   alias Bonfire.Quantify.Measures
-  import Bonfire.Me.Fake
+
 
   describe "one" do
     test "fetches an existing measure" do

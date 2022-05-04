@@ -23,7 +23,7 @@ defmodule Bonfire.Quantify.ConnCase do
       import Plug.Conn
       import Phoenix.ConnTest
       import Phoenix.LiveViewTest
-      import Bonfire.Quantify.ConnCase
+      # import Bonfire.Quantify.ConnCase, async: true
       import Bonfire.Quantify.Test.ConnHelpers
       # import Bonfire.Quantify.Test.FakeHelpers
       Bonfire.Common.Extend.quoted_import_if_enabled(Bonfire.Me.Fake)
