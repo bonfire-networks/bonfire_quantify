@@ -22,6 +22,8 @@ defmodule Bonfire.Quantify.DataCase do
       import Ecto
       import Ecto.Changeset
       import Ecto.Query
+
+      Bonfire.Common.Extend.quoted_import_if_enabled(Bonfire.Me.Fake)
       # import Bonfire.Quantify.DataCase
     end
   end
