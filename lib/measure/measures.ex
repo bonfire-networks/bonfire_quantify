@@ -4,7 +4,7 @@ defmodule Bonfire.Quantify.Measures do
   alias Bonfire.Quantify.{Measure, Unit, Units}
   alias Bonfire.Quantify.Measures.Queries
 
-  @user Bonfire.Common.Config.get!(:user_schema)
+  @user Application.compile_env!(:bonfire, :user_schema)
   import Bonfire.Common.Config, only: [repo: 0]
 
   def federation_module, do: ["Measure", "om2:Measure"]

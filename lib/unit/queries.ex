@@ -13,7 +13,7 @@ defmodule Bonfire.Quantify.Units.Queries do
 
   # alias CommonsPub.Users
 
-  @user Bonfire.Common.Config.get!(:user_schema)
+  @user Application.compile_env!(:bonfire, :user_schema)
 
   def query(Unit) do
     from(c in Unit, as: :unit)

@@ -7,7 +7,7 @@ defmodule Bonfire.Quantify.Units do
   alias Bonfire.Quantify.Units.Queries
 
   import Bonfire.Common.Config, only: [repo: 0]
-  @user Bonfire.Common.Config.get!(:user_schema)
+  @user Application.compile_env!(:bonfire, :user_schema)
 
   def federation_module, do: ["Unit", "om2:Unit"]
 
