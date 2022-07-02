@@ -56,7 +56,7 @@ defmodule Bonfire.Quantify.Measures do
   end
 
   defp insert_measure(creator, unit, attrs) do
-    # TODO: use upsert?
+    # TODO: use insert_or_ignore?
     # TODO: should we re-use the same measurement instead of storing duplicates? (but would have to be careful to insert a new measurement rather than update)
     repo().insert(Bonfire.Quantify.Measure.create_changeset(creator, unit, attrs)
       # on_conflict: [set: [has_numerical_value: attrs.has_numerical_value]]
