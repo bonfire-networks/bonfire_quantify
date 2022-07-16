@@ -1,6 +1,7 @@
 # SPDX-License-Identifier: AGPL-3.0-only
 defmodule Bonfire.Quantify.Measures do
   import Where
+  alias Bonfire.Common.Utils
   alias Bonfire.Quantify.{Measure, Unit, Units}
   alias Bonfire.Quantify.Measures.Queries
 
@@ -34,8 +35,8 @@ defmodule Bonfire.Quantify.Measures do
   @spec create(any(), Unit.t(), attrs :: map) :: {:ok, Measure.t()} | {:error, Changeset.t()}
   def create(creator, %Unit{} = unit, attrs) when is_map(attrs) do
     repo().transact_with(fn ->
-      with {:ok, item} <- insert_measure(creator, unit, attrs),
-           {:ok, activity} <- ValueFlows.Util.publish(creator, :create, item) |> info("published quantity") do
+      with {:ok, item} <- insert_measure(creator, unit, attrs) do
+        Utils.maybe_apply(ValueFlows.Util, :publish, [creator, :create, item]) # FIXME: use publishing logic in from a different repo
         {:ok, %{item | unit: unit}}
       end
     end)

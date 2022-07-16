@@ -42,6 +42,7 @@ defmodule Bonfire.Quantify.GraphQLTest do
   end
 
   describe "unitsPages" do
+    @tag :fixme
     test "fetches a page of units" do
       user = fake_user!()
       units = some(5, fn -> fake_unit!(user) end)
@@ -125,6 +126,7 @@ defmodule Bonfire.Quantify.GraphQLTest do
   end
 
   describe "measuresPages" do
+    @tag :fixme
     test "fetches a page of measures" do
       user = fake_user!()
       unit = fake_unit!(user)

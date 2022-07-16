@@ -1,8 +1,7 @@
 # SPDX-License-Identifier: AGPL-3.0-only
 defmodule Bonfire.Quantify.Units do
   import Where
-  # alias CommonsPub.Contexts
-
+  alias Bonfire.Common.Utils
   alias Bonfire.Quantify.Unit
   alias Bonfire.Quantify.Units.Queries
 
@@ -73,8 +72,8 @@ defmodule Bonfire.Quantify.Units do
   def create(creator, attrs) when is_map(attrs) do
     #
     repo().transact_with(fn ->
-      with {:ok, unit} <- insert_unit(creator, attrs),
-         {:ok, activity} <- ValueFlows.Util.publish(creator, :create, unit) |> info("published unit") do
+      with {:ok, unit} <- insert_unit(creator, attrs) do
+        Utils.maybe_apply(ValueFlows.Util, :publish, [creator, :create, unit]) # FIXME: use publishing logic in from a different repo
         {:ok, unit}
       end
     end)
@@ -84,8 +83,8 @@ defmodule Bonfire.Quantify.Units do
           {:ok, Unit.t()} | {:error, Changeset.t()}
   def create(creator, context, attrs) when is_map(attrs) do
     repo().transact_with(fn ->
-      with {:ok, unit} <- insert_unit(creator, context, attrs),
-         {:ok, activity} <- ValueFlows.Util.publish(creator, :create, unit) |> info("published unit") do
+      with {:ok, unit} <- insert_unit(creator, context, attrs) do
+        Utils.maybe_apply(ValueFlows.Util, :publish, [creator, :create, unit]) # FIXME: use publishing logic in from a different repo
         {:ok, unit}
       end
     end)

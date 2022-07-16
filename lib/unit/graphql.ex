@@ -222,11 +222,12 @@ defmodule Bonfire.Quantify.Units.GraphQL do
   # context validation
 
   defp validate_unit_context(pointer) do
-    # IO.inspect(context: pointer)
-    if pointer.__struct__ in valid_contexts() do
+    type = pointer.__struct__
+    valid_contexts = valid_contexts()
+    if :any in valid_contexts or type in valid_contexts do
       :ok
     else
-      GraphQL.not_permitted("in_scope_of")
+      GraphQL.not_permitted("in_scope_of: #{type}")
     end
   end
 
