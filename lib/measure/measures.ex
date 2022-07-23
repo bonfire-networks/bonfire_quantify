@@ -36,7 +36,7 @@ defmodule Bonfire.Quantify.Measures do
   def create(creator, %Unit{} = unit, attrs) when is_map(attrs) do
     repo().transact_with(fn ->
       with {:ok, item} <- insert_measure(creator, unit, attrs) do
-        Utils.maybe_apply(ValueFlows.Util, :publish, [creator, :create, item]) # FIXME: use publishing logic in from a different repo
+        Utils.maybe_apply(Bonfire.Social.Objects, :publish, [creator, :create, item, attrs, __MODULE__]) # FIXME: use publishing logic in from a different repo
         {:ok, %{item | unit: unit}}
       end
     end)

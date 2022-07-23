@@ -73,7 +73,7 @@ defmodule Bonfire.Quantify.Units do
     #
     repo().transact_with(fn ->
       with {:ok, unit} <- insert_unit(creator, attrs) do
-        Utils.maybe_apply(ValueFlows.Util, :publish, [creator, :create, unit]) # FIXME: use publishing logic in from a different repo
+        Utils.maybe_apply(Bonfire.Social.Objects, :publish, [creator, :create, unit, attrs, __MODULE__])
         {:ok, unit}
       end
     end)
@@ -84,7 +84,7 @@ defmodule Bonfire.Quantify.Units do
   def create(creator, context, attrs) when is_map(attrs) do
     repo().transact_with(fn ->
       with {:ok, unit} <- insert_unit(creator, context, attrs) do
-        Utils.maybe_apply(ValueFlows.Util, :publish, [creator, :create, unit]) # FIXME: use publishing logic in from a different repo
+        Utils.maybe_apply(Bonfire.Social.Objects, :publish, [creator, :create, unit, attrs, __MODULE__])
         {:ok, unit}
       end
     end)
