@@ -1,6 +1,6 @@
 # SPDX-License-Identifier: AGPL-3.0-only
 defmodule Bonfire.Quantify.Measures do
-  import Where
+  import Untangle
   alias Bonfire.Common.Utils
   alias Bonfire.Quantify.{Measure, Unit, Units}
   alias Bonfire.Quantify.Measures.Queries

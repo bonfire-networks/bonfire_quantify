@@ -2,7 +2,7 @@
 if Code.ensure_loaded?(Bonfire.API.GraphQL) do
 defmodule Bonfire.Quantify.Units.GraphQL do
   use Absinthe.Schema.Notation
-  import Where
+  import Untangle
 
   alias Bonfire.API.GraphQL
 
