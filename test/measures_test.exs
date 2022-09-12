@@ -17,7 +17,6 @@ defmodule Bonfire.Quantify.MeasuresTest do
   # alias Bonfire.Quantify.Measure
   alias Bonfire.Quantify.Measures
 
-
   describe "one" do
     test "fetches an existing measure" do
       user = fake_user!()
@@ -49,7 +48,9 @@ defmodule Bonfire.Quantify.MeasuresTest do
       assert_measure(measure2)
       assert measure1.unit_id == measure2.unit_id
       assert measure1.has_numerical_value == measure2.has_numerical_value
-      assert measure1.id != measure2.id # TODO: should we re-use the same measurement instead of storing duplicates? (but would have to be careful to insert a new measurement rather than update)
+
+      # TODO: should we re-use the same measurement instead of storing duplicates? (but would have to be careful to insert a new measurement rather than update)
+      assert measure1.id != measure2.id
     end
 
     test "fails when missing attributes" do

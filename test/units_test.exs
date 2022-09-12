@@ -6,13 +6,13 @@ defmodule Bonfire.Quantify.UnitsTest do
 
   # import CommonsPub.Utils.Trendy
   import Bonfire.Common.Simulation
+
   # import CommonsPub.Utils.Simulate
   # import CommonsPub.Web.Test.Orderings
   # import CommonsPub.Web.Test.Automaton
 
   # import Grumble
   # import Zest
-
 
   import Bonfire.Quantify.Simulate
   alias Bonfire.Quantify.Unit
@@ -37,7 +37,7 @@ defmodule Bonfire.Quantify.UnitsTest do
     end
 
     test "returns NotFound if item is deleted" do
-      unit = fake_user!() |> fake_unit!()
+      unit = fake_unit!(fake_user!())
       assert {:ok, unit} = Units.soft_delete(unit)
       assert {:error, :not_found} = Units.one([:default, id: unit.id])
     end
@@ -78,7 +78,7 @@ defmodule Bonfire.Quantify.UnitsTest do
 
   describe "soft_delete" do
     test "deletes an existing unit" do
-      unit = fake_user!() |> fake_unit!()
+      unit = fake_unit!(fake_user!())
       refute unit.deleted_at
       assert {:ok, deleted} = Units.soft_delete(unit)
       assert deleted.deleted_at

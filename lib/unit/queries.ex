@@ -101,7 +101,6 @@ defmodule Bonfire.Quantify.Units.Queries do
     |> filter(~w(disabled)a)
   end
 
-
   ## by status
 
   def filter(q, :deleted) do

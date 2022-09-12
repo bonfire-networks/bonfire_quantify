@@ -11,7 +11,6 @@ defmodule Bonfire.Quantify.GraphQLTest do
   # alias Bonfire.Quantify.Measures
   alias Bonfire.Quantify.Units
 
-
   describe "unit" do
     test "fetches an existing unit by ID" do
       user = fake_user!()
@@ -51,7 +50,9 @@ defmodule Bonfire.Quantify.GraphQLTest do
       q = units_query()
       conn = user_conn(user)
       vars = %{after: after_unit.id, limit: 2}
+
       assert %{"edges" => fetched} = grumble_post_key(q, conn, :units_pages, vars)
+
       assert Enum.count(fetched) == 2
       assert List.first(fetched)["id"] == after_unit.id
     end
@@ -119,7 +120,8 @@ defmodule Bonfire.Quantify.GraphQLTest do
       unit = fake_unit!(user)
       measure = fake_measure!(user, unit)
 
-      q = measure_query() #|> IO.inspect
+      # |> IO.inspect
+      q = measure_query()
       conn = user_conn(user)
       assert_measure(grumble_post_key(q, conn, :measure, %{id: measure.id}))
     end
@@ -136,10 +138,11 @@ defmodule Bonfire.Quantify.GraphQLTest do
       q = measures_pages_query()
       conn = user_conn(user)
       vars = %{after: after_measure.id, limit: 2}
+
       assert %{"edges" => fetched} = grumble_post_key(q, conn, :measures_pages, vars)
+
       assert Enum.count(fetched) == 2
       assert List.first(fetched)["id"] == after_measure.id
     end
   end
-
 end

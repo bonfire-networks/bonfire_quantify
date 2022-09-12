@@ -7,16 +7,17 @@ defmodule Bonfire.Quantify.Test.Faking do
   # import ExUnit.Assertions
   import Bonfire.API.GraphQL.Test.GraphQLAssertions
   import Bonfire.API.GraphQL.Test.GraphQLFields
+
   # import CommonsPub.Utils.Trendy
 
   import Grumble
 
-  alias Bonfire.Quantify.{Measure, Unit}
+  alias Bonfire.Quantify.Measure
+  alias Bonfire.Quantify.Unit
+
   # alias Bonfire.Quantify.Measures
   # alias Bonfire.Quantify.Units
-
   ## Unit
-
   ### Graphql fields
 
   def unit_subquery(options \\ []) do
@@ -66,28 +67,23 @@ defmodule Bonfire.Quantify.Test.Faking do
   end
 
   def create_unit_mutation(options \\ []) do
-    [unit: type!(:unit_create_params)]
-    |> gen_mutation(&create_unit_submutation/1, options)
+    gen_mutation([unit: type!(:unit_create_params)], &create_unit_submutation/1, options)
   end
 
   def create_unit_submutation(options \\ []) do
-    [unit: var(:unit)]
-    |> gen_submutation(:create_unit, &unit_response_fields/1, options)
+    gen_submutation([unit: var(:unit)], :create_unit, &unit_response_fields/1, options)
   end
 
   def update_unit_mutation(options \\ []) do
-    [unit: type!(:unit_update_params)]
-    |> gen_mutation(&update_unit_submutation/1, options)
+    gen_mutation([unit: type!(:unit_update_params)], &update_unit_submutation/1, options)
   end
 
   def update_unit_submutation(options \\ []) do
-    [unit: var(:unit)]
-    |> gen_submutation(:update_unit, &unit_response_fields/1, options)
+    gen_submutation([unit: var(:unit)], :update_unit, &unit_response_fields/1, options)
   end
 
   def delete_unit_mutation(options \\ []) do
-    [id: type!(:id)]
-    |> gen_mutation(&delete_unit_submutation/1, options)
+    gen_mutation([id: type!(:id)], &delete_unit_submutation/1, options)
   end
 
   def delete_unit_submutation(_options \\ []) do
@@ -120,7 +116,6 @@ defmodule Bonfire.Quantify.Test.Faking do
   # def some_fake_units!(opts \\ %{}, some_arg, users, communities) do
   #   flat_pam_product_some(users, communities, some_arg, &fake_unit!(&1, &2, opts))
   # end
-
   ## Measures
 
   def measure_fields(extra \\ []) do
@@ -169,35 +164,47 @@ defmodule Bonfire.Quantify.Test.Faking do
     )
   end
 
-
   def create_measure_mutation(options \\ []) do
-    [measure: type!(:measure_create_params)]
-    |> gen_mutation(&create_measure_submutation/1, options)
+    gen_mutation([measure: type!(:measure_create_params)], &create_measure_submutation/1, options)
   end
 
   def create_measure_submutation(options \\ []) do
-    [measure: var(:measure)]
-    |> gen_submutation(:create_measure, &measure_response_fields/1, options)
+    gen_submutation(
+      [measure: var(:measure)],
+      :create_measure,
+      &measure_response_fields/1,
+      options
+    )
   end
 
   def create_measure_with_unit_mutation(options \\ []) do
-    [measure: type!(:measure_create_params), has_unit: type!(:id)]
-    |> gen_mutation(&create_measure_with_unit_submutation/1, options)
+    gen_mutation(
+      [measure: type!(:measure_create_params), has_unit: type!(:id)],
+      &create_measure_with_unit_submutation/1,
+      options
+    )
   end
 
   def create_measure_with_unit_submutation(options \\ []) do
-    [measure: var(:measure), has_unit: var(:has_unit)]
-    |> gen_submutation(:create_measure, &measure_response_fields/1, options)
+    gen_submutation(
+      [measure: var(:measure), has_unit: var(:has_unit)],
+      :create_measure,
+      &measure_response_fields/1,
+      options
+    )
   end
 
   def update_measure_mutation(options \\ []) do
-    [measure: type!(:measure_update_params)]
-    |> gen_mutation(&update_measure_submutation/1, options)
+    gen_mutation([measure: type!(:measure_update_params)], &update_measure_submutation/1, options)
   end
 
   def update_measure_submutation(options \\ []) do
-    [measure: var(:measure)]
-    |> gen_submutation(:update_measure, &measure_response_fields/1, options)
+    gen_submutation(
+      [measure: var(:measure)],
+      :update_measure,
+      &measure_response_fields/1,
+      options
+    )
   end
 
   def assert_measure(%Measure{} = measure) do

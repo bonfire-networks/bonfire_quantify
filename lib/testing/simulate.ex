@@ -5,7 +5,9 @@ defmodule Bonfire.Quantify.Simulate do
   alias Bonfire.Quantify.Measures
 
   @doc "A unit"
-  def unit_name(), do: Faker.Util.pick(["kilo", "liter", "meter", "pound", "ton"])
+  def unit_name(),
+    do: Faker.Util.pick(["kilo", "liter", "meter", "pound", "ton"])
+
   def unit_symbol(), do: Faker.Util.pick(["kg", "m"])
 
   ### Start fake data functions
@@ -19,6 +21,7 @@ defmodule Bonfire.Quantify.Simulate do
     |> Map.put_new_lazy(:is_public, &truth/0)
     |> Map.put_new_lazy(:is_disabled, &falsehood/0)
     |> Map.put_new_lazy(:is_featured, &falsehood/0)
+
     # |> Map.merge(character(base))
   end
 
@@ -66,7 +69,4 @@ defmodule Bonfire.Quantify.Simulate do
   def fake_measure!(user, _, _) do
     fake_measure!(user, fake_unit!(user))
   end
-
-
-
 end

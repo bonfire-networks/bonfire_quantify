@@ -2,7 +2,8 @@
 defmodule Bonfire.Quantify.Measures.Queries do
   import Bonfire.Common.Repo.Utils, only: [match_admin: 0]
   import Ecto.Query
-  alias Bonfire.Quantify.{Measure, Unit}
+  alias Bonfire.Quantify.Measure
+  alias Bonfire.Quantify.Unit
 
   @user Application.compile_env!(:bonfire, :user_schema)
   import Bonfire.Common.Config, only: [repo: 0]
@@ -33,7 +34,6 @@ defmodule Bonfire.Quantify.Measures.Queries do
   end
 
   ### filter/2
-
   ## by many
 
   def filter(q, filters) when is_list(filters) do
@@ -62,8 +62,10 @@ defmodule Bonfire.Quantify.Measures.Queries do
   end
 
   def filter(q, {:user, nil}) do
-    q
-    |> filter(~w(disabled private)a)
+    filter(
+      q,
+      ~w(disabled private)a
+    )
   end
 
   ## by unit
@@ -87,7 +89,6 @@ defmodule Bonfire.Quantify.Measures.Queries do
   end
 
   ## by field values
-
 
   def filter(q, {:id, id}) when is_binary(id) do
     where(q, [measure: c], c.id == ^id)
@@ -133,5 +134,4 @@ defmodule Bonfire.Quantify.Measures.Queries do
     )
     |> repo().update_all([])
   end
-
 end

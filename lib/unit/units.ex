@@ -29,40 +29,45 @@ defmodule Bonfire.Quantify.Units do
   """
   def many(filters \\ []), do: {:ok, repo().many(Queries.query(Unit, filters))}
 
-
   def get_or_create(unit, user \\ nil)
 
-  def get_or_create(unit, user ) when is_binary(unit) do
+  def get_or_create(unit, user) when is_binary(unit) do
+    # during federation we store nested objects like Units in the Process dictionary for re-use
+    unit =
+      case Process.get("uri_object:#{unit}", false) do
+        false ->
+          nil
 
-    unit = case Process.get("uri_object:#{unit}", false) do # during federation we store nested objects like Units in the Process dictionary for re-use
-      false -> nil
-      nested_object ->
-        info(nested_object, "retrieved Unit from Process dict")
-        {:ok, nested_object}
-    end
+        nested_object ->
+          info(nested_object, "retrieved Unit from Process dict")
+          {:ok, nested_object}
+      end
 
     with {:error, _} <- unit || one(label_or_symbol: unit),
-    {:error, e} <- Bonfire.Quantify.Units.create(user, %{label: unit, symbol: unit}) do
-
+         {:error, e} <-
+           Bonfire.Quantify.Units.create(user, %{label: unit, symbol: unit}) do
       error(e)
       nil
-
-    else {:ok, unit} ->
-      {:ok, unit}
+    else
+      {:ok, unit} ->
+        {:ok, unit}
     end
   end
 
-  def get_or_create(%{canonical_url: id, label: label, symbol: symbol} = unit, user ) do
-     # TODO: lookup by canonicalURL for federated units
+  def get_or_create(
+        %{canonical_url: id, label: label, symbol: symbol} = unit,
+        user
+      ) do
+    # TODO: lookup by canonicalURL for federated units
     with {:error, _} <- one(symbol: symbol),
-    {:error, _} <- one(label: label),
-    {:error, e} <- Bonfire.Quantify.Units.create(user, %{label: label, symbol: symbol}) do
-
+         {:error, _} <- one(label: label),
+         {:error, e} <-
+           Bonfire.Quantify.Units.create(user, %{label: label, symbol: symbol}) do
       error(e)
       nil
-
-    else {:ok, unit} ->
-      {:ok, unit}
+    else
+      {:ok, unit} ->
+        {:ok, unit}
     end
   end
 
@@ -73,7 +78,14 @@ defmodule Bonfire.Quantify.Units do
     #
     repo().transact_with(fn ->
       with {:ok, unit} <- insert_unit(creator, attrs) do
-        Utils.maybe_apply(Bonfire.Social.Objects, :publish, [creator, :create, unit, attrs, __MODULE__])
+        Utils.maybe_apply(Bonfire.Social.Objects, :publish, [
+          creator,
+          :create,
+          unit,
+          attrs,
+          __MODULE__
+        ])
+
         {:ok, unit}
       end
     end)
@@ -84,7 +96,14 @@ defmodule Bonfire.Quantify.Units do
   def create(creator, context, attrs) when is_map(attrs) do
     repo().transact_with(fn ->
       with {:ok, unit} <- insert_unit(creator, context, attrs) do
-        Utils.maybe_apply(Bonfire.Social.Objects, :publish, [creator, :create, unit, attrs, __MODULE__])
+        Utils.maybe_apply(Bonfire.Social.Objects, :publish, [
+          creator,
+          :create,
+          unit,
+          attrs,
+          __MODULE__
+        ])
+
         {:ok, unit}
       end
     end)
@@ -99,7 +118,8 @@ defmodule Bonfire.Quantify.Units do
   end
 
   # TODO: take the user who is performing the update
-  @spec update(%Unit{}, attrs :: map) :: {:ok, Bonfire.Quantify.Unit.t()} | {:error, Changeset.t()}
+  @spec update(%Unit{}, attrs :: map) ::
+          {:ok, Bonfire.Quantify.Unit.t()} | {:error, Changeset.t()}
   def update(%Unit{} = unit, attrs) do
     repo().update(Unit.update_changeset(unit, attrs))
   end
@@ -114,11 +134,21 @@ defmodule Bonfire.Quantify.Units do
   end
 
   def ap_publish_activity(activity_name, thing) do
-    ValueFlows.Util.Federation.ap_publish_activity(activity_name, :unit, thing, 1, [
-    ])
+    ValueFlows.Util.Federation.ap_publish_activity(
+      activity_name,
+      :unit,
+      thing,
+      1,
+      []
+    )
   end
 
   def ap_receive_activity(creator, activity, object) do
-    ValueFlows.Util.Federation.ap_receive_activity(creator, activity, object, &create/2)
+    ValueFlows.Util.Federation.ap_receive_activity(
+      creator,
+      activity,
+      object,
+      &create/2
+    )
   end
 end
