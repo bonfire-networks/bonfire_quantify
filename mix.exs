@@ -35,6 +35,7 @@ defmodule Bonfire.Quantify.MixProject do
            branch: "main",
            optional: true}
         ])
+        # |> IO.inspect(label: "bonfire_quantify")
     ]
   end
 
