@@ -1,0 +1,42 @@
+digraph "xref graph" {
+  "lib/hydration.ex"
+  "lib/hydration.ex" -> "lib/measure/graphql.ex"
+  "lib/measure/graphql.ex" -> "lib/integration.ex"
+  "lib/measure/graphql.ex" -> "lib/measure/measure.ex"
+  "lib/measure/measure.ex" -> "lib/unit/unit.ex" [label="(export)"]
+  "lib/measure/graphql.ex" -> "lib/measure/measures.ex"
+  "lib/measure/measures.ex" -> "lib/measure/measure.ex" [label="(export)"]
+  "lib/measure/measures.ex" -> "lib/measure/queries.ex"
+  "lib/measure/queries.ex" -> "lib/measure/measure.ex"
+  "lib/measure/queries.ex" -> "lib/unit/unit.ex" [label="(export)"]
+  "lib/measure/measures.ex" -> "lib/unit/unit.ex" [label="(export)"]
+  "lib/measure/measures.ex" -> "lib/unit/units.ex"
+  "lib/unit/units.ex" -> "lib/unit/queries.ex"
+  "lib/unit/queries.ex" -> "lib/unit/unit.ex"
+  "lib/unit/units.ex" -> "lib/unit/unit.ex" [label="(export)"]
+  "lib/measure/graphql.ex" -> "lib/measure/queries.ex"
+  "lib/measure/graphql.ex" -> "lib/unit/queries.ex"
+  "lib/measure/graphql.ex" -> "lib/unit/unit.ex"
+  "lib/measure/graphql.ex" -> "lib/unit/units.ex"
+  "lib/hydration.ex" -> "lib/unit/graphql.ex"
+  "lib/unit/graphql.ex" -> "lib/integration.ex"
+  "lib/unit/graphql.ex" -> "lib/measure/measures.ex"
+  "lib/unit/graphql.ex" -> "lib/unit/queries.ex"
+  "lib/unit/graphql.ex" -> "lib/unit/unit.ex" [label="(export)"]
+  "lib/unit/graphql.ex" -> "lib/unit/units.ex"
+  "lib/integration.ex"
+  "lib/measure/graphql.ex"
+  "lib/measure/measure.ex"
+  "lib/measure/measures.ex"
+  "lib/measure/queries.ex"
+  "lib/migrations.ex"
+  "lib/migrations.ex" -> "lib/measure/measure.ex"
+  "lib/migrations.ex" -> "lib/unit/unit.ex"
+  "lib/testing/simulate.ex"
+  "lib/testing/simulate.ex" -> "lib/measure/measures.ex"
+  "lib/testing/simulate.ex" -> "lib/unit/units.ex"
+  "lib/unit/graphql.ex"
+  "lib/unit/queries.ex"
+  "lib/unit/unit.ex"
+  "lib/unit/units.ex"
+}
