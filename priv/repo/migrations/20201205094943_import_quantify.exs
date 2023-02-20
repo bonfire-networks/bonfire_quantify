@@ -1,4 +1,5 @@
-defmodule Bonfire.Repo.Migrations.ImportQuantify do
+defmodule Bonfire.Repo.Migrations.ImportQuantify  do
+  @moduledoc false
   use Ecto.Migration
 
   def change do
