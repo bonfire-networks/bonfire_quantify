@@ -239,7 +239,7 @@ if Code.ensure_loaded?(Bonfire.API.GraphQL) do
               {:ok, %{measure: m}}
 
             true ->
-              GraphQL.not_permitted("update")
+              GraphQL.not_permitted("to update this")
           end
         end
       end)

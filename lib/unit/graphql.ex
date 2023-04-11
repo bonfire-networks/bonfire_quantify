@@ -191,7 +191,7 @@ if Code.ensure_loaded?(Bonfire.API.GraphQL) do
               {:ok, %{unit: u}}
 
             true ->
-              GraphQL.not_permitted("update")
+              GraphQL.not_permitted("to update this")
           end
         end
       end)
@@ -206,7 +206,7 @@ if Code.ensure_loaded?(Bonfire.API.GraphQL) do
               {:ok, true}
             end
           else
-            GraphQL.not_permitted("delete")
+            GraphQL.not_permitted("to delete this")
           end
         end
       end)
