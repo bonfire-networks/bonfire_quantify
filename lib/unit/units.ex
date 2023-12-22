@@ -8,6 +8,7 @@ defmodule Bonfire.Quantify.Units do
   import Bonfire.Common.Config, only: [repo: 0]
   @user Application.compile_env!(:bonfire, :user_schema)
 
+  @behaviour Bonfire.Federate.ActivityPub.FederationModules
   def federation_module, do: ["Unit", "om2:Unit"]
 
   def cursor(), do: &[&1.id]

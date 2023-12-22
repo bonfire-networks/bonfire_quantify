@@ -11,6 +11,7 @@ defmodule Bonfire.Quantify.Measures do
   @user Application.compile_env!(:bonfire, :user_schema)
   import Bonfire.Common.Config, only: [repo: 0]
 
+  @behaviour Bonfire.Federate.ActivityPub.FederationModules
   def federation_module, do: ["Measure", "om2:Measure"]
 
   def cursor(), do: &[&1.id]
