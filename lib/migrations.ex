@@ -1,7 +1,7 @@
 defmodule Bonfire.Quantify.Migrations do
   @moduledoc false
   use Ecto.Migration
-  import Pointers.Migration
+  import Needle.Migration
 
   alias Measurement
 

@@ -1,5 +1,5 @@
 defmodule Bonfire.Quantify.Unit do
-  use Pointers.Pointable,
+  use Needle.Pointable,
     otp_app: :bonfire_quantify,
     source: "measurement_unit",
     table_id: "3N1TF0RMEASVRES0RQVANT1T1E"
@@ -8,7 +8,7 @@ defmodule Bonfire.Quantify.Unit do
 
   alias Ecto.Changeset
   alias Bonfire.Common.Utils
-  alias Pointers.Pointer
+  alias Needle.Pointer
   @user Application.compile_env!(:bonfire, :user_schema)
 
   # alias Bonfire.Quantify.Unit

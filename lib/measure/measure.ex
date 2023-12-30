@@ -1,6 +1,6 @@
 # SPDX-License-Identifier: AGPL-3.0-only
 defmodule Bonfire.Quantify.Measure do
-  use Pointers.Pointable,
+  use Needle.Pointable,
     otp_app: :bonfire_quantify,
     source: "measurement_measure",
     table_id: "4EASVRES0RQVANT1T1ES0FVN1T"

@@ -35,7 +35,7 @@ defmodule Bonfire.Quantify.GraphQLTest do
       user = fake_user!()
       q = unit_query()
       conn = user_conn(user)
-      vars = %{id: Pointers.ULID.generate()}
+      vars = %{id: Needle.ULID.generate()}
       assert [%{"status" => 404}] = grumble_post_errors(q, conn, vars)
     end
   end
@@ -72,7 +72,7 @@ defmodule Bonfire.Quantify.GraphQLTest do
       user = fake_user!()
       context = fake_user!()
 
-      # IO.inspect(Pointers.Tables.data(), limit: :infinity)
+      # IO.inspect(Needle.Tables.data(), limit: :infinity)
 
       q = create_unit_mutation(fields: [in_scope_of: [:__typename]])
       conn = user_conn(user)
