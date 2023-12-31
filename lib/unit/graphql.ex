@@ -158,7 +158,7 @@ if Code.ensure_loaded?(Bonfire.API.GraphQL) do
       repo().transact_with(fn ->
         with {:ok, user} <- GraphQL.current_user_or_not_logged_in(info),
              {:ok, context} <-
-               Bonfire.Common.Needle.get(context_id, current_user: user),
+               Bonfire.Common.Needles.get(context_id, current_user: user),
              :ok <- validate_unit_context(context),
              {:ok, unit} <- Units.create(user, context, attrs) do
           {:ok, %{unit: unit}}
