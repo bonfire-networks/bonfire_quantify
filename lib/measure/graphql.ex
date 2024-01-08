@@ -2,6 +2,7 @@
 if Code.ensure_loaded?(Bonfire.API.GraphQL) do
   defmodule Bonfire.Quantify.Measures.GraphQL do
     use Absinthe.Schema.Notation
+    import Bonfire.Common.Utils
 
     alias Bonfire.API.GraphQL
 
