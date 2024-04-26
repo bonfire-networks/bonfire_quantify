@@ -260,4 +260,6 @@ if Application.compile_env(:bonfire_api_graphql, :modularity) != :disabled and
       Bonfire.Common.Config.get_ext!(:bonfire_quantify, [Units, :valid_contexts])
     end
   end
+else
+  IO.warn("Skip GraphQL API")
 end
