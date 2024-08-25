@@ -5,6 +5,7 @@ defmodule Bonfire.Quantify.Unit do
     table_id: "3N1TF0RMEASVRES0RQVANT1T1E"
 
   import Bonfire.Common.Repo.Utils, only: [change_public: 1, change_disabled: 1]
+  use Bonfire.Common.E
 
   alias Ecto.Changeset
   alias Bonfire.Common.Utils
@@ -42,7 +43,7 @@ defmodule Bonfire.Quantify.Unit do
     |> Changeset.cast(attrs, @cast)
     |> Changeset.validate_required(@required)
     |> Changeset.change(
-      creator_id: Utils.e(creator, :id, nil),
+      creator_id: e(creator, :id, nil),
       is_public: true
     )
     |> common_changeset()
@@ -57,7 +58,7 @@ defmodule Bonfire.Quantify.Unit do
     |> Changeset.cast(attrs, @cast)
     |> Changeset.validate_required(@required)
     |> Changeset.change(
-      creator_id: Utils.e(creator, :id, nil),
+      creator_id: e(creator, :id, nil),
       context_id: context.id,
       is_public: true
     )

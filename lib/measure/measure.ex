@@ -6,6 +6,7 @@ defmodule Bonfire.Quantify.Measure do
     table_id: "4EASVRES0RQVANT1T1ES0FVN1T"
 
   import Bonfire.Common.Repo.Utils, only: [change_public: 1, change_disabled: 1]
+  use Bonfire.Common.E
 
   alias Ecto.Changeset
   @user Application.compile_env!(:bonfire, :user_schema)
@@ -57,7 +58,7 @@ defmodule Bonfire.Quantify.Measure do
       ) do
     validate_changeset(attrs)
     |> Changeset.change(
-      creator_id: Utils.e(creator, :id, nil),
+      creator_id: e(creator, :id, nil),
       unit_id: unit.id,
       is_public: true
     )
