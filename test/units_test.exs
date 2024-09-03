@@ -33,7 +33,7 @@ defmodule Bonfire.Quantify.UnitsTest do
     end
 
     test "returns NotFound if item is missing" do
-      assert {:error, :not_found} = Units.one(id: ulid())
+      assert {:error, :not_found} = Units.one(id: uid())
     end
 
     test "returns NotFound if item is deleted" do
