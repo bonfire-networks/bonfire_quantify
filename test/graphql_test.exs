@@ -35,7 +35,7 @@ defmodule Bonfire.Quantify.GraphQLTest do
       user = fake_user!()
       q = unit_query()
       conn = user_conn(user)
-      vars = %{id: Needle.ULID.generate()}
+      vars = %{id: Needle.UID.generate()}
       assert [%{"status" => 404}] = grumble_post_errors(q, conn, vars)
     end
   end
