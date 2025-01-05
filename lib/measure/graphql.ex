@@ -232,7 +232,7 @@ if Application.compile_env(:bonfire_api_graphql, :modularity) != :disabled and
         with {:ok, user} <- GraphQL.current_user_or_not_logged_in(info),
              {:ok, measure} <- measure(%{id: id}, info) do
           cond do
-            maybe_apply(Bonfire.Me.Accounts, :is_admin?, user) == true ->
+            maybe_apply(Bonfire.Me.Accounts, :is_admin?, [user], fallback_return: nil) == true ->
               {:ok, m} = Measures.update(measure, changes)
               {:ok, %{measure: m}}
 

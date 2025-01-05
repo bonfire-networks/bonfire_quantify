@@ -184,7 +184,7 @@ if Application.compile_env(:bonfire_api_graphql, :modularity) != :disabled and
         with {:ok, user} <- GraphQL.current_user_or_not_logged_in(info),
              {:ok, unit} <- unit(%{id: id}, info) do
           cond do
-            maybe_apply(Bonfire.Me.Accounts, :is_admin?, user) == true ->
+            maybe_apply(Bonfire.Me.Accounts, :is_admin?, [user], fallback_return: nil) == true ->
               {:ok, u} = Units.update(unit, changes)
               {:ok, %{unit: u}}
 
@@ -219,7 +219,8 @@ if Application.compile_env(:bonfire_api_graphql, :modularity) != :disabled and
     end
 
     defp allow_user_delete?(user, unit) do
-      maybe_apply(Bonfire.Me.Accounts, :is_admin?, user) == true or unit.creator_id == user.id
+      maybe_apply(Bonfire.Me.Accounts, :is_admin?, [user], fallback_return: nil) == true or
+        unit.creator_id == user.id
     end
 
     # TODO: provide a more helpful error message
