@@ -14,7 +14,7 @@ defmodule Bonfire.Quantify.Unit do
 
   # alias Bonfire.Quantify.Unit
 
-  @type t :: %__MODULE__{}
+  # @type t :: %__MODULE__{}
 
   pointable_schema do
     field(:label, :string)

@@ -13,7 +13,7 @@ defmodule Bonfire.Quantify.Measure do
   alias Bonfire.Common.Utils
   alias Bonfire.Quantify.Unit
 
-  @type t :: %__MODULE__{}
+  # @type t :: %__MODULE__{}
 
   pointable_schema do
     field(:has_numerical_value, :float)
