@@ -1,7 +1,7 @@
 # # SPDX-License-Identifier: AGPL-3.0-only
 # defmodule Bonfire.Quantify.UnitTest do
 #   # @tag :skip
-#   use CommonsPub.Web.ConnCase, async: true
+#   use CommonsPub.Web.DataCase, async: true
 #   import CommonsPub.Web.Test.Automaton
 
 #   import Bonfire.API.GraphQL.Test.GraphQLAssertions

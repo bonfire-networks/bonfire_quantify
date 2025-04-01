@@ -1,6 +1,6 @@
 # # SPDX-License-Identifier: AGPL-3.0-only
 defmodule Bonfire.Quantify.UnitsTest do
-  use Bonfire.Quantify.ConnCase, async: true
+  use Bonfire.Quantify.DataCase, async: true
 
   import Bonfire.Quantify.Test.Faking
 
