@@ -24,6 +24,8 @@ defmodule Bonfire.Quantify.DataCase do
 
       Bonfire.Common.Extend.quoted_import_if_enabled(Bonfire.Me.Fake)
       # import Bonfire.Quantify.DataCase
+
+      @moduletag :backend
     end
   end
 
