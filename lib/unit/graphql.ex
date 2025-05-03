@@ -5,6 +5,7 @@ if Application.compile_env(:bonfire_api_graphql, :modularity) != :disabled and
     use Absinthe.Schema.Notation
     import Untangle
     import Bonfire.Common.Utils
+    use Bonfire.Common.Config
 
     alias Bonfire.API.GraphQL
 
