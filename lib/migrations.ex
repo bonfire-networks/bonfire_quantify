@@ -16,8 +16,8 @@ defmodule Bonfire.Quantify.Migrations do
       add(:label, :string)
       add(:symbol, :string)
 
-      add(:context_id, weak_pointer(), null: true)
-      add(:creator_id, weak_pointer(), null: true)
+      add_pointer(:context_id, :weak, Needle.Pointer, null: true)
+      add_pointer(:creator_id, :weak, Needle.Pointer, null: true)
 
       add(:published_at, :timestamptz)
       add(:deleted_at, :timestamptz)
@@ -31,8 +31,8 @@ defmodule Bonfire.Quantify.Migrations do
     create_pointable_table(Bonfire.Quantify.Measure) do
       add(:has_numerical_value, :float)
 
-      add(:unit_id, strong_pointer(Bonfire.Quantify.Unit), null: false)
-      add(:creator_id, weak_pointer(), null: true)
+      add_pointer(:unit_id, :strong, Bonfire.Quantify.Unit, null: false)
+      add_pointer(:creator_id, :weak, Needle.Pointer, null: true)
 
       add(:published_at, :timestamptz)
       add(:deleted_at, :timestamptz)
