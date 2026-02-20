@@ -35,7 +35,7 @@ defmodule Bonfire.Quantify.Units do
   def get_or_create(unit, user) when is_binary(unit) do
     # during federation we store nested objects like Units in the Process dictionary for re-use
     unit =
-      case Process.get("uri_object:#{unit}", false) do
+      case ProcessTree.get("uri_object:#{unit}", false) do
         false ->
           nil
 
