@@ -34,8 +34,12 @@ defmodule Bonfire.Quantify.Units do
 
   def get_or_create(unit, user) when is_binary(unit) do
     # during federation we store nested objects like Units in the Process dictionary for re-use
-    unit =
-      case ProcessTree.get("uri_object:#{unit}", false) do
+    # unit =
+    # its own name: rebinding `unit` lost the label, so the lookup and create below got nil when nothing was cached
+    # case ProcessTree.get("uri_object:#{unit}", false) do
+    # the second argument is a keyword list of options
+    cached =
+      case ProcessTree.get("uri_object:#{unit}", default: false) do
         false ->
           nil
 
@@ -44,7 +48,8 @@ defmodule Bonfire.Quantify.Units do
           {:ok, nested_object}
       end
 
-    with {:error, _} <- unit || one(label_or_symbol: unit),
+    # with {:error, _} <- unit || one(label_or_symbol: unit),
+    with {:error, _} <- cached || one(label_or_symbol: unit),
          {:error, e} <-
            Bonfire.Quantify.Units.create(user, %{label: unit, symbol: unit}) do
       error(e)
