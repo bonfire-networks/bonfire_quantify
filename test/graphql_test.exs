@@ -1,6 +1,7 @@
 # SPDX-License-Identifier: AGPL-3.0-only
 defmodule Bonfire.Quantify.GraphQLTest do
-  use Bonfire.Quantify.DataCase, async: true
+  # ConnCase imports the conn helpers (`user_conn/1`, `grumble_post_key/4`) and `Bonfire.Me.Fake`
+  use Bonfire.Quantify.ConnCase, async: true
 
   import Bonfire.Common.Simulation
   # import CommonsPub.Utils.Simulate

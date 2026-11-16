@@ -1,6 +1,7 @@
 # SPDX-License-Identifier: AGPL-3.0-only
 defmodule Bonfire.Quantify.Test.ConnHelpers do
   require Phoenix.ConnTest
+  require Bonfire.Common.Config
   alias Phoenix.ConnTest
   alias Phoenix.Controller
 

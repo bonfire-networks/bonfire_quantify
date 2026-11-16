@@ -62,6 +62,8 @@ defmodule Bonfire.Quantify.Measure do
       unit_id: unit.id,
       is_public: true
     )
+    # `is_public` is only set above, after the `change_public/1` of `validate_changeset/2` has run, so apply it again to set `published_at`
+    |> change_public()
   end
 
   def update_changeset(%__MODULE__{} = measure, attrs) do
